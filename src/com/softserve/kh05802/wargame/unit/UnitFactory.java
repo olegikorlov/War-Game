@@ -13,6 +13,10 @@ public class UnitFactory {
       return new Knight();
     } else if (type.equals(Defender.class)) {
       return new Defender();
+    } else if (type.equals(Rookie.class)) {
+      return new Rookie();
+    } else if (type.equals(Vampire.class)) {
+      return new Vampire();
     } else if (type.equals(Warrior.class)) {
       return new Warrior();
     }

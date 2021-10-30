@@ -20,7 +20,7 @@ public class Warrior {
         return health > 0;
     }
 
-    int getHealth() {
+    public int getHealth() {
         return health;
     }
 

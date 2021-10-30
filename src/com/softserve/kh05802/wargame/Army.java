@@ -56,14 +56,4 @@ public final class Army {
     return sb.toString();
   }
 
-  private Warrior generateUnitUsingReflection(Class<? extends Warrior> type) {
-    // example of generation of units with reflection:
-    try {
-      return type.getConstructor().newInstance();
-    } catch (ReflectiveOperationException e) {
-      e.printStackTrace();
-    }
-    throw new RuntimeException("Some problems with object creation using reflection!");
-  }
-
 }
