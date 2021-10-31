@@ -24,12 +24,14 @@ Also, you can to initiate the duel between two armies.
     Battle.fight(army1,army2);
 ```
 
-The Army may consist this such of the units.
+The [Army](https://py.checkio.org/ru/mission/army-battles/) may consist this such of the units.
 
-* Warriors
-* Knight
+* [Warriors](https://py.checkio.org/en/mission/the-warriors/)
+* [Knight](https://py.checkio.org/ru/mission/the-warriors/)
 * Rookie
-* Defender
-* Vampire
+* [Defender](https://py.checkio.org/ru/mission/the-defenders/)
+* [Vampire](https://py.checkio.org/ru/mission/the-vampires/)
+
+[Tests](https://github.com/CheckiO-Missions/checkio-mission-set-war-the-vampires/blob/master/verification/tests.py)
 
 ![Wargame](https://d17mnqrx9pmt3e.cloudfront.net/media/missions/media/4e0dd625813446a595c6f45e5033d355/warrior.png)
