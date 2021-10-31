@@ -26,8 +26,6 @@ Also, you can to initiate the duel between two armies.
 
 The Army may consist this such of the units.
 
-Units:
-
 * Warriors
 * Knight
 * Rookie
