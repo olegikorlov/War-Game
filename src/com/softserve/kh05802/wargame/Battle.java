@@ -15,10 +15,13 @@ public final class Battle {
    * @return true if the first wins, false otherwise
    */
   public static boolean fight(Warrior warrior1, Warrior warrior2) {
+    System.out.println(warrior1.getHealth()+"\t"+warrior2.getHealth());
     while (warrior1.isAlive() && warrior2.isAlive()) {
       warrior1.hits(warrior2);
+      System.out.println(warrior1.getHealth()+"\t"+warrior2.getHealth());
       if (warrior2.isAlive()) {
         warrior2.hits(warrior1);
+        System.out.println(warrior1.getHealth()+"\t"+warrior2.getHealth());
       } else {
         return true;
       }

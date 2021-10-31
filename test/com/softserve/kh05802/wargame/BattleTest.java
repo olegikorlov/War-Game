@@ -344,4 +344,16 @@ class BattleTest {
     assertTrue(res);
   }
 
+  @Test
+  @DisplayName("1.5. Fight method testing (vampire)")
+  void fightWithVampireTesting() {
+    // arrange
+    Warrior jimbo = new Defender();
+    Warrior vladimir = new Vampire();
+    // act
+    boolean res1 = Battle.fight(jimbo, vladimir);
+    // assert
+    assertTrue(res1);
+  }
+
 }
