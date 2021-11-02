@@ -2,57 +2,66 @@ package com.softserve.kh05802.wargame.unit;
 
 public class Warrior {
 
-    private static final int MAX_HEALTH = 50;
+  private static final int MAX_HEALTH = 50;
 
-    private int health;
-    private final int attack;
+  private final int attack;
+  private int health;
 
-    public Warrior() {
-        this(MAX_HEALTH, 5);
-    }
+  private Warrior behind;
 
-    protected Warrior(int health, int attack) {
-        this.attack = attack;
-        this.health = health;
-    }
+  public Warrior() {
+    this(MAX_HEALTH, 5);
+  }
 
-    public boolean isAlive() {
-        return health > 0;
-    }
+  protected Warrior(int health, int attack) {
+    this.attack = attack;
+    this.health = health;
+  }
 
-    public int getHealth() {
-        return health;
-    }
+  public boolean isAlive() {
+    return health > 0;
+  }
 
-    int getAttack() {
-        return attack;
-    }
+  public int getHealth() {
+    return health;
+  }
 
-    void cure(int value) {
-        int healthAfterCure = health + value;
-        if (healthAfterCure > getMaxHealth()) {
-            health = getMaxHealth();
-            return;
-        }
-        health = healthAfterCure;
-    }
+  protected void setHealth(int health) {
+    this.health = Math.min(health, getMaxHealth());
+  }
 
-    int getMaxHealth() {
-        return MAX_HEALTH;
-    }
+  int getAttack() {
+    return attack;
+  }
 
-    public void hits(Warrior warrior) {
-        warrior.health -= warrior.getDamage(this);
-    }
+  protected int getMaxHealth() {
+    return MAX_HEALTH;
+  }
 
-    protected int getDamage(Warrior warrior) {
-        return warrior.getAttack();
-    }
+  public void hits(Warrior warrior) {
+    warrior.health -= warrior.getDamage(this);
+  }
 
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "{" + "health=" + health +
-            ", attack=" + attack +
-            '}';
-    }
+  protected int getDamage(Warrior warrior) {
+    return getDamage(warrior, 100);
+  }
+
+  protected int getDamage(Warrior warrior, int percent) {
+    return warrior.getAttack() * percent / 100;
+  }
+
+  public Warrior getBehind() {
+    return behind;
+  }
+
+  public void setBehind(Warrior behind) {
+    this.behind = behind;
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName() + "{" + "health=" + health +
+        ", attack=" + attack +
+        '}';
+  }
 }

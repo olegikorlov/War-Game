@@ -12,7 +12,7 @@ public final class Rookie extends Warrior {
   }
 
   @Override
-  int getMaxHealth() {
+  protected int getMaxHealth() {
     return MAX_HEALTH;
   }
 

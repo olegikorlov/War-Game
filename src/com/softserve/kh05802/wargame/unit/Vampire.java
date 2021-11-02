@@ -6,31 +6,27 @@ package com.softserve.kh05802.wargame.unit;
 public final class Vampire extends Warrior {
 
   private static final int MAX_HEALTH = 40;
-
-  private final int vampirism;
+  private static final int VAMPIRISM = 50;
 
   public Vampire() {
-    this(MAX_HEALTH, 4, 50);
+    super(MAX_HEALTH, 4);
   }
 
-  private Vampire(int health, int attack, int vampirism) {
-    super(health, attack);
-    this.vampirism = vampirism;
+  private void cure(int value) {
+    setHealth(getHealth() + value);
+  }
+
+  @Override
+  protected int getMaxHealth() {
+    return MAX_HEALTH;
   }
 
   @Override
   public void hits(Warrior warrior) {
-    int healthBefore = warrior.getHealth();
-    super.hits(warrior);
-    int healthAfter = warrior.getHealth();
-    int damage = healthBefore - healthAfter;
-    int cureValue = damage * vampirism / 100;
-    this.cure(cureValue);
-  }
-
-  @Override
-  int getMaxHealth() {
-    return MAX_HEALTH;
+    int damage = warrior.getDamage(this);
+    warrior.setHealth(warrior.getHealth() - damage);
+    int cureValue = damage * VAMPIRISM / 100;
+    cure(cureValue);
   }
 
 }

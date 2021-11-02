@@ -13,8 +13,13 @@ public final class Army {
   private final Deque<Warrior> warriors = new LinkedList<>();
 
   public Army addUnits(Class<? extends Warrior> type, int quantity) {
-    List<Warrior> unit = generateUnits(type, quantity);
-    warriors.addAll(unit);
+    List<Warrior> units = generateUnits(type, quantity);
+    for (Warrior warrior : units) {
+      if (!warriors.isEmpty()) {
+        warriors.getLast().setBehind(warrior);
+      }
+      warriors.add(warrior);
+    }
     return this;
   }
 
@@ -26,14 +31,18 @@ public final class Army {
     return result;
   }
 
-  Warrior next() {
+  public boolean isAlive() {
+    return hasNext();
+  }
+
+  public Warrior next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
     }
     return warriors.peek();
   }
 
-  boolean hasNext() {
+  public boolean hasNext() {
     if (warriors.isEmpty()) {
       return false;
     }
@@ -44,16 +53,10 @@ public final class Army {
     return true;
   }
 
-  public boolean isAlive() {
-    return hasNext();
-  }
-
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("Army{");
-    sb.append("warriors=").append(warriors);
-    sb.append('}');
-    return sb.toString();
+    return "Army{" + "warriors=" + warriors +
+        '}';
   }
 
 }
