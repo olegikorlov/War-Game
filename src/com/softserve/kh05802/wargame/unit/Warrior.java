@@ -40,13 +40,16 @@ public class Warrior {
 
   public void hits(Warrior warrior) {
     warrior.health -= warrior.getDamage(this);
+    if (getBehind() instanceof Healer) {
+      ((Healer) getBehind()).heal(this);
+    }
   }
 
   protected int getDamage(Warrior warrior) {
     return getDamage(warrior, 100);
   }
 
-  protected int getDamage(Warrior warrior, int percent) {
+  private int getDamage(Warrior warrior, int percent) {
     return warrior.getAttack() * percent / 100;
   }
 

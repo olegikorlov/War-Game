@@ -15,13 +15,13 @@ public final class Battle {
    * @return true if the first wins, false otherwise
    */
   public static boolean fight(Warrior warrior1, Warrior warrior2) {
-//    System.out.println(warrior1.getHealth() + "\t" + warrior2.getHealth());
+    System.out.println(warrior1.getBehind() + " < " + warrior1 + "  " + warrior2 + " > " + warrior2.getBehind());
     while (warrior1.isAlive() && warrior2.isAlive()) {
       warrior1.hits(warrior2);
-//      System.out.println(warrior1.getHealth() + "\t" + warrior2.getHealth());
+      System.out.println(warrior1.getBehind() + " < " + warrior1 + "  " + warrior2 + " > " + warrior2.getBehind());
       if (warrior2.isAlive()) {
         warrior2.hits(warrior1);
-//        System.out.println(warrior1.getHealth() + "\t" + warrior2.getHealth());
+        System.out.println(warrior1.getBehind() + " < " + warrior1 + "  " + warrior2 + " > " + warrior2.getBehind());
       } else {
         return true;
       }
@@ -31,6 +31,7 @@ public final class Battle {
 
   public static boolean fight(Army army1, Army army2) {
     while (army1.hasNext() && army2.hasNext()) {
+//      System.out.println("\n" + army1 + "\n" + army2);
       fight(army1.next(), army2.next());
     }
     return army1.isAlive();

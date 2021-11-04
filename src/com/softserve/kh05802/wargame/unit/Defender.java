@@ -24,8 +24,8 @@ public final class Defender extends Warrior {
   }
 
   @Override
-  protected int getDamage(Warrior warrior, int percent) {
-    int damage = warrior.getAttack() * percent / 100 - defense;
+  protected int getDamage(Warrior warrior) {
+    int damage = warrior.getAttack() - defense;
     return Math.max(damage, 0);
   }
 }

@@ -382,9 +382,55 @@ class BattleTest {
   }
 
   @Test
-  @Order(25)
-  @DisplayName("Lancer")
-  void lancer() {
+  @Order(26)
+  @DisplayName("17. Battle")
+  void battle17() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 7)
+        .addUnits(Vampire.class, 3)
+        .addUnits(Healer.class, 1)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Defender.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Vampire.class, 6)
+        .addUnits(Lancer.class, 4);
+
+    boolean res = Battle.fight(army1, army2);
+    assertTrue(res);
+
+  }
+
+  @Test
+  @Order(27)
+  @DisplayName("18. Battle")
+  void battle18() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 1)
+        .addUnits(Warrior.class, 3)
+        .addUnits(Healer.class, 1)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Knight.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Vampire.class, 6)
+        .addUnits(Lancer.class, 4);
+
+    boolean res = Battle.fight(army1, army2);
+    assertFalse(res);
+
+  }
+
+  @Test
+  @Order(28)
+  @DisplayName("Healer")
+  void healer() {
     Warrior chuck = new Warrior();
     Warrior bruce = new Warrior();
     Warrior carl = new Knight();
@@ -400,6 +446,7 @@ class BattleTest {
     Warrior ogre = new Warrior();
     Warrior freelancer = new Lancer();
     Warrior vampire = new Vampire();
+    Healer priest = new Healer();
 
     assertTrue(Battle.fight(chuck, bruce));
     assertFalse(Battle.fight(dave, carl));
@@ -407,10 +454,8 @@ class BattleTest {
     assertFalse(bruce.isAlive());
     assertTrue(carl.isAlive());
     assertFalse(dave.isAlive());
-
     assertFalse(Battle.fight(carl, mark));
     assertFalse(carl.isAlive());
-
     assertFalse(Battle.fight(bob, mike));
     assertTrue(Battle.fight(lancelot, rog));
     assertFalse(Battle.fight(eric, richard));
@@ -418,30 +463,60 @@ class BattleTest {
     assertTrue(Battle.fight(freelancer, vampire));
     assertTrue(freelancer.isAlive());
 
-    Army myArmy = new Army();
-    myArmy.addUnits(Defender.class, 2)
+    assertEquals(14, freelancer.getHealth());
+    priest.heal(freelancer);
+    assertEquals(16, freelancer.getHealth());
+
+    Army myArmy = new Army()
+        .addUnits(Defender.class, 2)
+        .addUnits(Healer.class, 1)
         .addUnits(Vampire.class, 2)
-        .addUnits(Lancer.class, 4)
+        .addUnits(Lancer.class, 2)
+        .addUnits(Healer.class, 1)
         .addUnits(Warrior.class, 1);
 
-    Army enemyArmy = new Army();
-    enemyArmy.addUnits(Warrior.class, 2)
-        .addUnits(Lancer.class, 2)
+    Army enemyArmy = new Army()
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 4)
+        .addUnits(Healer.class, 1)
         .addUnits(Defender.class, 2)
-        .addUnits(Vampire.class, 3);
+        .addUnits(Vampire.class, 3)
+        .addUnits(Healer.class, 1);
 
-    Army army3 = new Army();
-    army3.addUnits(Warrior.class, 1)
+    assertFalse(Battle.fight(myArmy, enemyArmy));
+
+    Army army3 = new Army()
+        .addUnits(Warrior.class, 1)
         .addUnits(Lancer.class, 1)
+        .addUnits(Healer.class, 1)
         .addUnits(Defender.class, 2);
 
-    Army army4 = new Army();
-    army4.addUnits(Vampire.class, 3)
+    Army army4 = new Army()
+        .addUnits(Vampire.class, 3)
         .addUnits(Warrior.class, 1)
+        .addUnits(Healer.class, 1)
         .addUnits(Lancer.class, 2);
 
-    assertTrue(Battle.fight(myArmy, enemyArmy));
-    assertFalse(Battle.fight(army3, army4));
+    boolean result = Battle.fight(army3, army4);
+    assertTrue(result);
   }
 
+/*
+  @Test
+  @Order(29)
+  @DisplayName("Healer1")
+  void healer1() {
+    Army army3 = new Army()
+        .addUnits(Warrior.class, 1)
+        .addUnits(Healer.class, 1)
+        .addUnits(Healer.class, 1);
+
+    Army army4 = new Army()
+        .addUnits(Lancer.class, 1)
+        .addUnits(Lancer.class, 1);
+
+    boolean result = Battle.fight(army3, army4);
+    assertTrue(result);
+  }
+*/
 }

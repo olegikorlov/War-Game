@@ -13,20 +13,26 @@ public class Lancer extends Warrior {
   }
 
   @Override
+  protected int getMaxHealth() {
+    return MAX_HEALTH;
+  }
+
+  @Override
   public void hits(Warrior warrior) {
-    int firstWarriorDamage = warrior.getDamage(this);
-    warrior.setHealth(warrior.getHealth() - firstWarriorDamage);
+    int healthBefore = warrior.getHealth();
+    super.hits(warrior);
+    int firstWarriorDamage = healthBefore - warrior.getHealth();
     Warrior warriorBehind = warrior.getBehind();
     if (warriorBehind != null) {
-      warriorBehind.setHealth(warriorBehind.getHealth() - warriorBehind.getDamage(new WarriorProxy(firstWarriorDamage)));
+      new ProxyWarrior(firstWarriorDamage).hits(warriorBehind);
     }
   }
 
-  private static final class WarriorProxy extends Warrior {
+  private static final class ProxyWarrior extends Warrior {
 
     private final int attack;
 
-    private WarriorProxy(int attack) {
+    private ProxyWarrior(int attack) {
       this.attack = attack;
     }
 

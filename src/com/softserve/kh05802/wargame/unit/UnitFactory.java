@@ -19,6 +19,8 @@ public class UnitFactory {
       return new Vampire();
     } else if (type.equals(Lancer.class)) {
       return new Lancer();
+    } else if (type.equals(Healer.class)) {
+      return new Healer();
     } else if (type.equals(Warrior.class)) {
       return new Warrior();
     }
