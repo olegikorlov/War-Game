@@ -1,5 +1,6 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.equipment.*;
 import com.softserve.kh05802.wargame.unit.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -501,22 +502,88 @@ class BattleTest {
     assertTrue(result);
   }
 
-/*
   @Test
   @Order(29)
-  @DisplayName("Healer1")
-  void healer1() {
-    Army army3 = new Army()
-        .addUnits(Warrior.class, 1)
-        .addUnits(Healer.class, 1)
-        .addUnits(Healer.class, 1);
+  @DisplayName("Weapon")
+  void weapon() {
+    Warrior ogre = new Warrior();
+    Warrior lancelot = new Knight();
+    Defender richard = new Defender();
+    Vampire eric = new Vampire();
+    Warrior freelancer = new Lancer();
+    Healer priest = new Healer();
 
-    Army army4 = new Army()
-        .addUnits(Lancer.class, 1)
+    Equipment sword = new Sword();
+    Equipment shield = new Shield();
+    Equipment axe = new GreatAxe();
+    Equipment katana = new Katana();
+    Equipment wand = new MagicWand();
+    Equipment superWeapon = new Weapon.Builder()
+        .health(50)
+        .attack(10)
+        .defense(5)
+        .vampirism(150)
+        .healPower(8)
+        .build();
+
+    ogre.equipWeapon(sword);
+    ogre.equipWeapon(shield);
+    ogre.equipWeapon(superWeapon);
+    lancelot.equipWeapon(superWeapon);
+    richard.equipWeapon(shield);
+    eric.equipWeapon(superWeapon);
+    freelancer.equipWeapon(axe);
+    freelancer.equipWeapon(katana);
+    priest.equipWeapon(wand);
+    priest.equipWeapon(shield);
+
+//    assertEquals(125, ogre.getHealth());
+    assertEquals(17, lancelot.getAttack());
+    assertEquals(4, richard.getDefense());
+    assertEquals(200, eric.getVampirism());
+    assertEquals(15, freelancer.getHealth());
+    assertEquals(5, priest.getHealPower());
+
+    assertFalse(Battle.fight(ogre, eric));
+    assertFalse(Battle.fight(priest, richard));
+    assertTrue(Battle.fight(lancelot, freelancer));
+
+    Army myArmy = new Army()
+        .addUnits(Knight.class, 1)
         .addUnits(Lancer.class, 1);
 
-    boolean result = Battle.fight(army3, army4);
-    assertTrue(result);
+    Army enemyArmy = new Army()
+        .addUnits(Vampire.class, 1)
+        .addUnits(Healer.class, 1);
+
+    myArmy.unitBy(1).equipWeapon(superWeapon);
+
+    enemyArmy.unitBy(0).equipWeapon(katana);
+    enemyArmy.unitBy(1).equipWeapon(wand);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+
   }
-*/
+
+  @Test
+  @Order(30)
+  @DisplayName("Warlord")
+  void warlord() {
+    Warrior warlord = new Warlord();
+    System.out.println(warlord);
+
+    Army myArmy = new Army()
+        .addUnits(Knight.class, 1)
+        .addUnits(Warlord.class, 5)
+        .addUnits(Knight.class, 2)
+        .addUnits(Vampire.class, 3)
+        .addUnits(Defender.class, 1)
+        .addUnits(Warlord.class, 3)
+        .addUnits(Lancer.class, 2);
+
+    myArmy.moveUnits();
+
+    System.out.println(myArmy);
+    System.out.println(myArmy.unitBy(3));
+  }
 }

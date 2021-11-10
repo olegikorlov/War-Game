@@ -1,7 +1,8 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.unit.Unit;
 import com.softserve.kh05802.wargame.unit.UnitFactory;
-import com.softserve.kh05802.wargame.unit.Warrior;
+import com.softserve.kh05802.wargame.unit.Warlord;
 
 import java.util.*;
 
@@ -10,21 +11,23 @@ import java.util.*;
  */
 public final class Army {
 
-  private final Deque<Warrior> warriors = new LinkedList<>();
+  private final List<Unit> units = new LinkedList<>();
 
-  public Army addUnits(Class<? extends Warrior> type, int quantity) {
-    List<Warrior> units = generateUnits(type, quantity);
-    for (Warrior warrior : units) {
-      if (!warriors.isEmpty()) {
-        warriors.getLast().setBehind(warrior);
-      }
-      warriors.add(warrior);
+  private boolean isWarlordPresent = false;
+
+  public Army addUnits(Class<? extends Unit> type, int quantity) {
+    if (type != Warlord.class) {
+      List<Unit> unitList = generateUnits(type, quantity);
+      units.addAll(unitList);
+    } else if (!isWarlordPresent) {
+      units.add(UnitFactory.generateUnit(type));
+      isWarlordPresent = true;
     }
     return this;
   }
 
-  private List<Warrior> generateUnits(Class<? extends Warrior> type, int quantity) {
-    List<Warrior> result = new ArrayList<>();
+  private List<Unit> generateUnits(Class<? extends Unit> type, int quantity) {
+    List<Unit> result = new ArrayList<>();
     for (int i = 0; i < quantity; i++) {
       result.add(UnitFactory.generateUnit(type));
     }
@@ -35,27 +38,45 @@ public final class Army {
     return hasNext();
   }
 
-  public Warrior next() {
+  public Unit unitBy(int index) {
+    if (index < units.size()) {
+      return units.get(index);
+    } else {
+      throw new IndexOutOfBoundsException();
+    }
+  }
+
+  public Unit next() {
     if (!hasNext()) {
       throw new NoSuchElementException();
     }
-    return warriors.peek();
+    return units.get(0);
   }
 
   public boolean hasNext() {
-    if (warriors.isEmpty()) {
+    if (units.isEmpty()) {
       return false;
     }
-    if (!warriors.peek().isAlive()) {
-      warriors.pop();
-      return !warriors.isEmpty();
+    if (!units.get(0).isAlive()) {
+      units.remove(0);
+      return !units.isEmpty();
     }
     return true;
   }
 
+  public void moveUnits() {
+    if (!isWarlordPresent) {
+      return;
+    }
+//    units.indexOf()
+//    Unit[] units = (Unit[]) this.units.toArray();
+
+    System.out.println(Arrays.toString(units.toArray()));
+  }
+
   @Override
   public String toString() {
-    return "Army{" + "warriors=" + warriors +
+    return "Army{" + "units=" + units +
         '}';
   }
 

@@ -5,33 +5,32 @@ import com.softserve.kh05802.wargame.equipment.Equipment;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class Healer extends Warrior {
+public final class Warlord extends Warrior {
 
-  private int healPower;
+  private int defense;
 
-  public Healer() {
-    this(60, 0, 2);
+  public Warlord() {
+    this(100, 4, 2);
   }
 
-  private Healer(int health, int attack, int healPower) {
+  private Warlord(int health, int attack, int defense) {
     super(health, attack);
-    this.healPower = healPower;
+    this.defense = defense;
   }
 
-  public int getHealPower() {
-    return healPower;
+  public int getDefense() {
+    return defense;
   }
 
-  public void heal(Unit unit) {
-    if (unit.isAlive()) {
-      unit.addHealth(getHealPower());
-    }
+  @Override
+  public int getDamage(Unit unit) {
+    return Math.min(unit.getAttack() - getDefense(), getHealth());
   }
 
   @Override
   public void equipWeapon(Equipment equipment) {
     super.equipWeapon(equipment);
-    this.healPower = Math.max(0, getHealPower() + equipment.getHealPower());
+    this.defense = Math.max(0, getDefense() + equipment.getDefense());
   }
 
   @Override
@@ -39,7 +38,7 @@ public final class Healer extends Warrior {
     return this.getClass().getSimpleName() + "{" +
         "health=" + getHealth() +
         ", attack=" + getAttack() +
-        ", healPower=" + getHealPower() +
+        ", defense=" + getDefense() +
         '}';
   }
 

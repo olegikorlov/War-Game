@@ -1,33 +1,50 @@
 package com.softserve.kh05802.wargame.unit;
 
+import com.softserve.kh05802.wargame.equipment.Equipment;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 public final class Vampire extends Warrior {
 
-  private static final int MAX_HEALTH = 40;
-  private static final int VAMPIRISM = 50;
+  private int vampirism;
 
   public Vampire() {
-    super(MAX_HEALTH, 4);
+    this(40, 4, 50);
   }
 
-  private void cure(int value) {
-    setHealth(getHealth() + value);
+  private Vampire(int health, int attack, int vampirism) {
+    super(health, attack);
+    this.vampirism = vampirism;
+  }
+
+  public int getVampirism() {
+    return vampirism;
   }
 
   @Override
-  protected int getMaxHealth() {
-    return MAX_HEALTH;
+  public void hits(Unit unit) {
+    int damage = unit.getDamage(this);
+    super.hits(unit);
+    int value = damage * getVampirism() / 100;
+    int difference = getMaxHealth() - getHealth();
+    if (difference > 0) {
+      addHealth(Math.min(value, difference));
+    }
   }
 
   @Override
-  public void hits(Warrior warrior) {
-    int healthBefore = warrior.getHealth();
-    super.hits(warrior);
-    int damage = healthBefore - warrior.getHealth();
-    int cureValue = damage * VAMPIRISM / 100;
-    cure(cureValue);
+  public void equipWeapon(Equipment equipment) {
+    super.equipWeapon(equipment);
+    this.vampirism = Math.max(0, getVampirism() + equipment.getVampirism());
   }
 
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName() + "{" +
+        "health=" + getHealth() +
+        ", attack=" + getAttack() +
+        ", vampirism=" + getVampirism() +
+        '}';
+  }
 }

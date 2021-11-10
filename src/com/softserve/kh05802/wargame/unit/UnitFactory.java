@@ -8,7 +8,7 @@ public class UnitFactory {
   private UnitFactory() {
   }
 
-  public static Warrior generateUnit(Class<? extends Warrior> type) {
+  public static Unit generateUnit(Class<? extends Unit> type) {
     if (type.equals(Knight.class)) {
       return new Knight();
     } else if (type.equals(Defender.class)) {
@@ -21,6 +21,8 @@ public class UnitFactory {
       return new Lancer();
     } else if (type.equals(Healer.class)) {
       return new Healer();
+    } else if (type.equals(Warlord.class)) {
+      return new Warlord();
     } else if (type.equals(Warrior.class)) {
       return new Warrior();
     }

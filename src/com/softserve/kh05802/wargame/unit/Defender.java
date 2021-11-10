@@ -1,16 +1,16 @@
 package com.softserve.kh05802.wargame.unit;
 
+import com.softserve.kh05802.wargame.equipment.Equipment;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 public final class Defender extends Warrior {
 
-  private static final int MAX_HEALTH = 60;
-
-  private final int defense;
+  private int defense;
 
   public Defender() {
-    this(MAX_HEALTH, 3, 2);
+    this(60, 3, 2);
   }
 
   private Defender(int health, int attack, int defense) {
@@ -18,14 +18,28 @@ public final class Defender extends Warrior {
     this.defense = defense;
   }
 
-  @Override
-  protected int getMaxHealth() {
-    return MAX_HEALTH;
+  public int getDefense() {
+    return defense;
   }
 
   @Override
-  protected int getDamage(Warrior warrior) {
-    int damage = warrior.getAttack() - defense;
-    return Math.max(damage, 0);
+  public int getDamage(Unit unit) {
+    return Math.min(unit.getAttack() - getDefense(), getHealth());
   }
+
+  @Override
+  public void equipWeapon(Equipment equipment) {
+    super.equipWeapon(equipment);
+    this.defense = Math.max(0, getDefense() + equipment.getDefense());
+  }
+
+  @Override
+  public String toString() {
+    return this.getClass().getSimpleName() + "{" +
+        "health=" + getHealth() +
+        ", attack=" + getAttack() +
+        ", defense=" + getDefense() +
+        '}';
+  }
+
 }
