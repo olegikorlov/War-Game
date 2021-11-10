@@ -80,4 +80,21 @@ public final class Army {
         '}';
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    Army army = (Army) o;
+
+    if (isWarlordPresent != army.isWarlordPresent) return false;
+    return units != null ? units.equals(army.units) : army.units == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = units != null ? units.hashCode() : 0;
+    result = 31 * result + (isWarlordPresent ? 1 : 0);
+    return result;
+  }
 }
