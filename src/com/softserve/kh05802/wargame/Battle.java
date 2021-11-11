@@ -2,6 +2,7 @@ package com.softserve.kh05802.wargame;
 
 import com.softserve.kh05802.wargame.unit.Unit;
 
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 public final class Battle {
@@ -44,11 +45,37 @@ public final class Battle {
   }
 
   public static boolean fight(Army army1, Army army2) {
+    army1.lineUp();
+    army2.lineUp();
     while (army1.hasNext() && army2.hasNext()) {
 //      System.out.println("\n" + army1 + "\n" + army2);
       fight(army1.next(), army2.next());
     }
     return army1.isAlive();
+  }
+
+  public static boolean straightFight(Army army1, Army army2) {
+    while (true) {
+      if (!army1.isAlive() && army2.isAlive()) {
+        return false;
+      }
+      if (army1.isAlive() && !army2.isAlive()) {
+        return true;
+      }
+      Iterator<Unit> armyOneIterator = army1.iterator();
+      Iterator<Unit> armyTwoIterator = army2.iterator();
+      while (armyOneIterator.hasNext() && armyTwoIterator.hasNext()) {
+        boolean isUnitOfArmyOneWinner = fight(armyOneIterator.next(), armyTwoIterator.next());
+        if (isUnitOfArmyOneWinner) {
+          armyTwoIterator.remove();
+        } else {
+          armyOneIterator.remove();
+        }
+      }
+      LOGGER.info(army1.toString());
+      LOGGER.info(army2.toString());
+    }
+
   }
 
 }

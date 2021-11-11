@@ -1,5 +1,8 @@
 package com.softserve.kh05802.wargame.unit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
@@ -29,5 +32,12 @@ public class UnitFactory {
     throw new IllegalArgumentException("Unknown type: " + type);
   }
 
+  public static List<Unit> generateUnits(Class<? extends Unit> type, int quantity) {
+    List<Unit> result = new ArrayList<>();
+    for (int i = 0; i < quantity; i++) {
+      result.add(UnitFactory.generateUnit(type));
+    }
+    return result;
+  }
 
 }
