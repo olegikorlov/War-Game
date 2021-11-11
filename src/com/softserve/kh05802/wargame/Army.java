@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class Army {
+public final class Army implements Iterable<Unit> {
 
   private final List<Unit> units = new LinkedList<>();
 
@@ -17,7 +17,7 @@ public final class Army {
 
   public Army addUnits(Class<? extends Unit> type, int quantity) {
     if (type != Warlord.class) {
-      List<Unit> unitList = generateUnits(type, quantity);
+      List<Unit> unitList = UnitFactory.generateUnits(type, quantity);
       units.addAll(unitList);
     } else if (!isWarlordPresent) {
       units.add(UnitFactory.generateUnit(type));
@@ -26,16 +26,17 @@ public final class Army {
     return this;
   }
 
-  private List<Unit> generateUnits(Class<? extends Unit> type, int quantity) {
-    List<Unit> result = new ArrayList<>();
-    for (int i = 0; i < quantity; i++) {
-      result.add(UnitFactory.generateUnit(type));
-    }
-    return result;
-  }
-
   public boolean isAlive() {
     return hasNext();
+  }
+
+  public void lineUp() {
+    if (units.size() == 1) {
+      return;
+    }
+    for (int i = 0; i < units.size() - 1; i++) {
+      units.get(i).setBehind(units.get(i + 1));
+    }
   }
 
   public Unit unitBy(int index) {
@@ -44,6 +45,10 @@ public final class Army {
     } else {
       throw new IndexOutOfBoundsException();
     }
+  }
+
+  int size() {
+    return units.size();
   }
 
   public Unit next() {
@@ -68,9 +73,6 @@ public final class Army {
     if (!isWarlordPresent) {
       return;
     }
-//    units.indexOf()
-//    Unit[] units = (Unit[]) this.units.toArray();
-
     System.out.println(Arrays.toString(units.toArray()));
   }
 
@@ -81,20 +83,8 @@ public final class Army {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Army army = (Army) o;
-
-    if (isWarlordPresent != army.isWarlordPresent) return false;
-    return units != null ? units.equals(army.units) : army.units == null;
+  public Iterator<Unit> iterator() {
+    return units.iterator();
   }
 
-  @Override
-  public int hashCode() {
-    int result = units != null ? units.hashCode() : 0;
-    result = 31 * result + (isWarlordPresent ? 1 : 0);
-    return result;
-  }
 }

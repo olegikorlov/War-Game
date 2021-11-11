@@ -2,11 +2,8 @@ package com.softserve.kh05802.wargame;
 
 import com.softserve.kh05802.wargame.equipment.*;
 import com.softserve.kh05802.wargame.unit.*;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -430,6 +427,431 @@ class BattleTest {
 
   @Test
   @Order(28)
+  @DisplayName("19. Battle")
+  void battle19() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 5)
+        .addUnits(Vampire.class, 3)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Vampire.class, 6)
+        .addUnits(Lancer.class, 5);
+    assertFalse(Battle.straightFight(army1, army2));
+  }
+
+  @Test
+  @Order(29)
+  @DisplayName("20. Battle")
+  void battle20() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 7)
+        .addUnits(Vampire.class, 3)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Vampire.class, 6)
+        .addUnits(Lancer.class, 4);
+    assertTrue(Battle.straightFight(army1, army2));
+  }
+
+  @Test
+  @Order(30)
+  @DisplayName("21. Battle")
+  @Disabled
+  void battle21() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 7)
+        .addUnits(Vampire.class, 3)
+        .addUnits(Healer.class, 1)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Defender.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Vampire.class, 6)
+        .addUnits(Lancer.class, 4);
+    assertFalse(Battle.straightFight(army1, army2));
+  }
+
+  @Test
+  @Order(31)
+  @DisplayName("22. Battle")
+  void battle22() {
+    Army army1 = new Army()
+        .addUnits(Lancer.class, 4)
+        .addUnits(Warrior.class, 3)
+        .addUnits(Healer.class, 1)
+        .addUnits(Warrior.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Knight.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warrior.class, 4)
+        .addUnits(Defender.class, 4)
+        .addUnits(Healer.class, 1)
+        .addUnits(Vampire.class, 2)
+        .addUnits(Lancer.class, 4);
+    assertTrue(Battle.straightFight(army1, army2));
+  }
+
+  @Test
+  @Order(32)
+  @DisplayName("23. Battle")
+  void battle23() {
+    Army army1 = new Army()
+        .addUnits(Warlord.class, 1)
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 2)
+        .addUnits(Healer.class, 2);
+    Army army2 = new Army()
+        .addUnits(Warlord.class, 1)
+        .addUnits(Vampire.class, 1)
+        .addUnits(Healer.class, 2)
+        .addUnits(Knight.class, 2);
+    army1.moveUnits();
+    army2.moveUnits();
+    assertTrue(Battle.fight(army1, army2));
+  }
+
+  @Test
+  @Order(33)
+  @DisplayName("24. Battle")
+  @Disabled
+  void battle24() {
+    Army army1 = new Army()
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 2)
+        .addUnits(Defender.class, 1)
+        .addUnits(Warlord.class, 3);
+    Army army2 = new Army()
+        .addUnits(Warlord.class, 2)
+        .addUnits(Vampire.class, 1)
+        .addUnits(Healer.class, 5)
+        .addUnits(Knight.class, 2);
+    army1.moveUnits();
+    army2.moveUnits();
+    assertFalse(Battle.fight(army1, army2));
+  }
+
+  @Test
+  @Order(34)
+  @DisplayName("25. Battle")
+  @Disabled
+  void battle25() {
+    Army army1 = new Army()
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 3)
+        .addUnits(Defender.class, 1)
+        .addUnits(Warlord.class, 4);
+    Army army2 = new Army()
+        .addUnits(Warlord.class, 1)
+        .addUnits(Vampire.class, 1)
+        .addUnits(Rookie.class, 1)
+        .addUnits(Knight.class, 1);
+    army1.unitBy(0).equipWeapon(new Sword());
+    army2.unitBy(0).equipWeapon(new Shield());
+    army1.moveUnits();
+    army2.moveUnits();
+    var res = Battle.fight(army1, army2);
+    assertTrue(res);
+  }
+
+  @Test
+  @Order(35)
+  @DisplayName("26. Battle")
+  @Disabled
+  void battle26() {
+    Army army1 = new Army()
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 3)
+        .addUnits(Defender.class, 1)
+        .addUnits(Warlord.class, 1);
+    Army army2 = new Army()
+        .addUnits(Warlord.class, 5)
+        .addUnits(Vampire.class, 1)
+        .addUnits(Rookie.class, 1)
+        .addUnits(Knight.class, 1);
+    army1.unitBy(0).equipWeapon(new Sword());
+    army2.unitBy(0).equipWeapon(new Shield());
+    army1.moveUnits();
+    army2.moveUnits();
+    var res = Battle.straightFight(army1, army2);
+    assertFalse(res);
+  }
+
+  @Test
+  @Order(36)
+  @DisplayName("1. Weapon")
+  void weapon1() {
+    Warrior unit1 = new Warrior();
+    Warrior unit2 = new Vampire();
+    Equipment weapon1 = new Weapon.Builder()
+        .health(-10)
+        .attack(5)
+        .defense(0)
+        .vampirism(40)
+        .healPower(0)
+        .build();
+    Equipment weapon2 = new Sword();
+    unit1.equipWeapon(weapon1);
+    unit2.equipWeapon(weapon2);
+    assertTrue(Battle.fight(unit1, unit2));
+  }
+
+  @Test
+  @Order(37)
+  @DisplayName("2. Weapon")
+  void weapon2() {
+    Warrior unit1 = new Defender();
+    Warrior unit2 = new Lancer();
+    Equipment weapon1 = new Shield();
+    Equipment weapon2 = new GreatAxe();
+    unit1.equipWeapon(weapon1);
+    unit2.equipWeapon(weapon2);
+    assertFalse(Battle.fight(unit1, unit2));
+  }
+
+  @Test
+  @Order(38)
+  @DisplayName("3. Weapon")
+  void weapon3() {
+    Warrior unit1 = new Healer();
+    Warrior unit2 = new Knight();
+    Equipment weapon1 = new MagicWand();
+    Equipment weapon2 = new Katana();
+    unit1.equipWeapon(weapon1);
+    unit2.equipWeapon(weapon2);
+    assertFalse(Battle.fight(unit1, unit2));
+  }
+
+  @Test
+  @Order(39)
+  @DisplayName("4. Weapon")
+  void weapon4() {
+    Warrior unit1 = new Defender();
+    Warrior unit2 = new Vampire();
+    Equipment weapon1 = new Shield();
+    Equipment weapon2 = new MagicWand();
+    Equipment weapon3 = new Shield();
+    Equipment weapon4 = new Katana();
+    unit1.equipWeapon(weapon1);
+    unit1.equipWeapon(weapon2);
+    unit2.equipWeapon(weapon3);
+    unit2.equipWeapon(weapon4);
+    assertFalse(Battle.fight(unit1, unit2));
+  }
+
+  @Test
+  @Order(40)
+  @DisplayName("5. Weapon")
+  void weapon5() {
+    Equipment weapon1 = new MagicWand();
+    Equipment weapon2 = new GreatAxe();
+
+    Army myArmy = new Army()
+        .addUnits(Knight.class, 1)
+        .addUnits(Lancer.class, 1);
+    Army enemyArmy = new Army()
+        .addUnits(Vampire.class, 1)
+        .addUnits(Healer.class, 1);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon2);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(41)
+  @DisplayName("6. Weapon")
+  void weapon6() {
+    Equipment weapon1 = new Sword();
+    Equipment weapon2 = new GreatAxe();
+
+    Army myArmy = new Army()
+        .addUnits(Defender.class, 1)
+        .addUnits(Warrior.class, 1);
+    Army enemyArmy = new Army()
+        .addUnits(Knight.class, 1)
+        .addUnits(Healer.class, 1);
+
+    myArmy.unitBy(0).equipWeapon(weapon2);
+    myArmy.unitBy(1).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon1);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(42)
+  @DisplayName("7. Weapon")
+  void weapon7() {
+    Equipment weapon1 = new Katana();
+    Equipment weapon2 = new Shield();
+
+    Army myArmy = new Army()
+        .addUnits(Defender.class, 2);
+    Army enemyArmy = new Army()
+        .addUnits(Knight.class, 1)
+        .addUnits(Vampire.class, 1);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon1);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon1);
+
+    assertFalse(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(43)
+  @DisplayName("8. Weapon")
+  void weapon8() {
+    Equipment weapon1 = new Weapon.Builder()
+        .health(-20)
+        .attack(6)
+        .defense(1)
+        .vampirism(40)
+        .healPower(-2)
+        .build();
+    Equipment weapon2 = new Weapon.Builder()
+        .health(20)
+        .attack(-2)
+        .defense(2)
+        .vampirism(-55)
+        .healPower(3)
+        .build();
+
+    Army myArmy = new Army()
+        .addUnits(Knight.class, 3);
+    Army enemyArmy = new Army()
+        .addUnits(Warrior.class, 1)
+        .addUnits(Defender.class, 2);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.unitBy(2).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon2);
+    enemyArmy.unitBy(2).equipWeapon(weapon2);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(44)
+  @DisplayName("9. Weapon")
+  void weapon9() {
+    Equipment weapon1 = new Weapon.Builder()
+        .health(-20)
+        .attack(1)
+        .defense(1)
+        .vampirism(40)
+        .healPower(-2)
+        .build();
+    Equipment weapon2 = new Weapon.Builder()
+        .health(20)
+        .attack(2)
+        .defense(2)
+        .vampirism(-55)
+        .healPower(3)
+        .build();
+
+    Army myArmy = new Army()
+        .addUnits(Vampire.class, 3);
+    Army enemyArmy = new Army()
+        .addUnits(Warrior.class, 1)
+        .addUnits(Defender.class, 2);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.unitBy(2).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon2);
+    enemyArmy.unitBy(2).equipWeapon(weapon2);
+
+    assertFalse(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(45)
+  @DisplayName("10. Weapon")
+  void weapon10() {
+    Equipment weapon1 = new Katana();
+    Equipment weapon2 = new Shield();
+
+    Army myArmy = new Army()
+        .addUnits(Vampire.class, 2)
+        .addUnits(Rookie.class, 2);
+    Army enemyArmy = new Army()
+        .addUnits(Warrior.class, 1)
+        .addUnits(Defender.class, 2);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.unitBy(2).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon2);
+    enemyArmy.unitBy(2).equipWeapon(weapon2);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(46)
+  @DisplayName("11. Weapon")
+  void weapon11() {
+    Equipment weapon1 = new Sword();
+    Equipment weapon2 = new GreatAxe();
+
+    Army myArmy = new Army()
+        .addUnits(Vampire.class, 3);
+    Army enemyArmy = new Army()
+        .addUnits(Warrior.class, 1)
+        .addUnits(Defender.class, 1);
+
+    myArmy.unitBy(0).equipWeapon(weapon2);
+    myArmy.unitBy(1).equipWeapon(weapon2);
+    myArmy.unitBy(2).equipWeapon(weapon2);
+    enemyArmy.unitBy(0).equipWeapon(weapon1);
+    enemyArmy.unitBy(1).equipWeapon(weapon1);
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(47)
+  @DisplayName("12. Weapon")
+  void weapon12() {
+    Equipment weapon1 = new Katana();
+    Equipment weapon2 = new MagicWand();
+
+    Army myArmy = new Army()
+        .addUnits(Rookie.class, 3);
+    Army enemyArmy = new Army()
+        .addUnits(Defender.class, 1)
+        .addUnits(Healer.class, 1);
+
+    myArmy.unitBy(0).equipWeapon(weapon1);
+    myArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.unitBy(2).equipWeapon(weapon1);
+    enemyArmy.unitBy(0).equipWeapon(weapon2);
+    enemyArmy.unitBy(1).equipWeapon(weapon2);
+
+    assertFalse(Battle.fight(myArmy, enemyArmy));
+  }
+
+  @Test
+  @Order(48)
   @DisplayName("Healer")
   void healer() {
     Warrior chuck = new Warrior();
@@ -503,7 +925,7 @@ class BattleTest {
   }
 
   @Test
-  @Order(29)
+  @Order(49)
   @DisplayName("Weapon")
   void weapon() {
     Warrior ogre = new Warrior();
@@ -537,7 +959,7 @@ class BattleTest {
     priest.equipWeapon(wand);
     priest.equipWeapon(shield);
 
-//    assertEquals(125, ogre.getHealth());
+    assertEquals(125, ogre.getHealth());
     assertEquals(17, lancelot.getAttack());
     assertEquals(4, richard.getDefense());
     assertEquals(200, eric.getVampirism());
@@ -566,24 +988,41 @@ class BattleTest {
   }
 
   @Test
-  @Order(30)
+  @Order(50)
   @DisplayName("Warlord")
+  @Disabled
   void warlord() {
-    Warrior warlord = new Warlord();
-    System.out.println(warlord);
+    Warrior ronald = new Warlord();
+    Warrior heimdall = new Knight();
+
+    assertFalse(Battle.fight(heimdall, ronald));
 
     Army myArmy = new Army()
-        .addUnits(Knight.class, 1)
-        .addUnits(Warlord.class, 5)
-        .addUnits(Knight.class, 2)
-        .addUnits(Vampire.class, 3)
-        .addUnits(Defender.class, 1)
+        .addUnits(Warlord.class, 1)
+        .addUnits(Warrior.class, 2)
+        .addUnits(Lancer.class, 2)
+        .addUnits(Healer.class, 2);
+
+    Army enemyArmy = new Army()
         .addUnits(Warlord.class, 3)
-        .addUnits(Lancer.class, 2);
+        .addUnits(Vampire.class, 1)
+        .addUnits(Healer.class, 2)
+        .addUnits(Knight.class, 2);
 
     myArmy.moveUnits();
+    enemyArmy.moveUnits();
 
-    System.out.println(myArmy);
-    System.out.println(myArmy.unitBy(3));
+    assertTrue(myArmy.unitBy(0) instanceof Lancer);
+    assertTrue(myArmy.unitBy(1) instanceof Healer);
+    assertTrue(myArmy.unitBy(6) instanceof Warlord);
+
+    assertTrue(enemyArmy.unitBy(0) instanceof Vampire);
+    assertTrue(enemyArmy.unitBy(5) instanceof Warlord);
+    assertTrue(enemyArmy.unitBy(4) instanceof Knight);
+
+    assertEquals(6, enemyArmy.size());
+
+    assertTrue(Battle.fight(myArmy, enemyArmy));
   }
+
 }
