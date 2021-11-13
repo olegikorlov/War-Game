@@ -1,30 +1,29 @@
-package com.softserve.kh05802.wargame.unit;
+package com.softserve.kh05802.wargame.unit.impl;
 
-import com.softserve.kh05802.wargame.equipment.Equipment;
+import com.softserve.kh05802.wargame.unit.Attacker;
+import com.softserve.kh05802.wargame.unit.Defender;
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class Warlord extends Warrior {
+abstract class AbstractDefender extends Warrior implements Defender {
 
   private int defense;
 
-  public Warlord() {
-    this(100, 4, 2);
-  }
-
-  private Warlord(int health, int attack, int defense) {
+  AbstractDefender(int health, int attack, int defense) {
     super(health, attack);
     this.defense = defense;
   }
 
+  @Override
   public int getDefense() {
     return defense;
   }
 
   @Override
-  public int getDamage(Unit unit) {
-    return Math.min(unit.getAttack() - getDefense(), getHealth());
+  public int getDamageFrom(Attacker attacker) {
+    return Math.min(attacker.getAttack() - getDefense(), getHealth());
   }
 
   @Override

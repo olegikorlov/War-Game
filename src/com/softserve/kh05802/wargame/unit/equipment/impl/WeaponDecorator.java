@@ -1,4 +1,6 @@
-package com.softserve.kh05802.wargame.equipment;
+package com.softserve.kh05802.wargame.unit.equipment.impl;
+
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
@@ -7,11 +9,17 @@ abstract class WeaponDecorator implements Equipment {
 
   private final Equipment equipment;
 
-  protected WeaponDecorator() {
-    this.equipment = new Weapon();
+  WeaponDecorator() {
+    this.equipment = Weapon.builder()
+        .health(0)
+        .attack(0)
+        .defense(0)
+        .vampirism(0)
+        .healPower(0)
+        .build();
   }
 
-  protected WeaponDecorator(Equipment equipment) {
+  WeaponDecorator(Equipment equipment) {
     this.equipment = equipment;
   }
 

@@ -47,11 +47,23 @@ public final class Battle {
   public static boolean fight(Army army1, Army army2) {
     army1.lineUp();
     army2.lineUp();
+
     while (army1.hasNext() && army2.hasNext()) {
-//      System.out.println("\n" + army1 + "\n" + army2);
-      fight(army1.next(), army2.next());
+      boolean result = fight(army1.next(), army2.next());
+      if (!result) {
+        buryDeadAndMoveUnits(army1);
+        army1.lineUp();
+      } else {
+        buryDeadAndMoveUnits(army2);
+        army2.lineUp();
+      }
     }
     return army1.isAlive();
+  }
+
+  private static void buryDeadAndMoveUnits(Army army) {
+    army.buryDeadUnits();
+    army.moveUnits();
   }
 
   public static boolean straightFight(Army army1, Army army2) {
@@ -68,8 +80,10 @@ public final class Battle {
         boolean isUnitOfArmyOneWinner = fight(armyOneIterator.next(), armyTwoIterator.next());
         if (isUnitOfArmyOneWinner) {
           armyTwoIterator.remove();
+          army2.moveUnits();
         } else {
           armyOneIterator.remove();
+          army1.moveUnits();
         }
       }
       LOGGER.info(army1.toString());

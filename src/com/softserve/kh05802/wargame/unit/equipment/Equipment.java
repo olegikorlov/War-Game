@@ -1,4 +1,4 @@
-package com.softserve.kh05802.wargame.equipment;
+package com.softserve.kh05802.wargame.unit.equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>

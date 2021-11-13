@@ -1,9 +1,11 @@
-package com.softserve.kh05802.wargame.equipment;
+package com.softserve.kh05802.wargame.unit.equipment.impl;
+
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public class Weapon implements Equipment {
+public final class Weapon implements Equipment {
 
   private final int health;
   private final int attack;
@@ -21,6 +23,10 @@ public class Weapon implements Equipment {
     this.defense = builder.defense;
     this.vampirism = builder.vampirism;
     this.healPower = builder.healPower;
+  }
+
+  public static Builder builder() {
+    return new Builder();
   }
 
   @Override

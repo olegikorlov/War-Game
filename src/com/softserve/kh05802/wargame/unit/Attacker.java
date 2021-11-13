@@ -3,10 +3,10 @@ package com.softserve.kh05802.wargame.unit;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public final class Rookie extends Warrior {
+public interface Attacker {
 
-  public Rookie() {
-    super(50, 1);
-  }
+  int getAttack();
+
+  void hits(Unit unit);
 
 }

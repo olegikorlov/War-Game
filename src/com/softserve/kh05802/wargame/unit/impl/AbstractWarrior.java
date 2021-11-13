@@ -1,10 +1,15 @@
-package com.softserve.kh05802.wargame.unit;
+package com.softserve.kh05802.wargame.unit.impl;
 
-import com.softserve.kh05802.wargame.equipment.Equipment;
+import com.softserve.kh05802.wargame.unit.Attacker;
+import com.softserve.kh05802.wargame.unit.Unit;
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
+ */
 abstract class AbstractWarrior implements Unit {
 
   private int health;
@@ -41,6 +46,19 @@ abstract class AbstractWarrior implements Unit {
   }
 
   @Override
+  public void hits(Unit unit) {
+    unit.addHealth(Math.min(0, -unit.getDamageFrom(this)));
+    if (getBehind() instanceof HealerImpl) {
+      ((HealerImpl) getBehind()).heal(this);
+    }
+  }
+
+  @Override
+  public boolean isAlive() {
+    return health > 0;
+  }
+
+  @Override
   public Unit getBehind() {
     return behind;
   }
@@ -51,21 +69,8 @@ abstract class AbstractWarrior implements Unit {
   }
 
   @Override
-  public boolean isAlive() {
-    return health > 0;
-  }
-
-  @Override
-  public void hits(Unit unit) {
-    unit.addHealth(Math.min(0, -unit.getDamage(this)));
-    if (getBehind() instanceof Healer) {
-      ((Healer) getBehind()).heal(this);
-    }
-  }
-
-  @Override
-  public int getDamage(Unit unit) {
-    return Math.min(unit.getAttack(), getHealth());
+  public int getDamageFrom(Attacker attacker) {
+    return Math.min(attacker.getAttack(), getHealth());
   }
 
   @Override

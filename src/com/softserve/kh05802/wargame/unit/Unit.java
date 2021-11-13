@@ -1,23 +1,19 @@
 package com.softserve.kh05802.wargame.unit;
 
-import com.softserve.kh05802.wargame.equipment.Equipment;
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public interface Unit {
+public interface Unit extends Attacker {
 
-  int getAttack();
+  boolean isAlive();
 
   Unit getBehind();
 
   void setBehind(Unit unit);
 
-  boolean isAlive();
-
-  void hits(Unit unit);
-
-  int getDamage(Unit unit);
+  int getDamageFrom(Attacker attacker);
 
   void equipWeapon(Equipment equipment);
 

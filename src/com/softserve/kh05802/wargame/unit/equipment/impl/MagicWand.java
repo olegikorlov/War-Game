@@ -1,9 +1,11 @@
-package com.softserve.kh05802.wargame.equipment;
+package com.softserve.kh05802.wargame.unit.equipment.impl;
+
+import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public class MagicWand extends WeaponDecorator {
+public final class MagicWand extends WeaponDecorator {
 
   public MagicWand() {
   }
