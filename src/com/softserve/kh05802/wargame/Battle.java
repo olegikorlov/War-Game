@@ -15,81 +15,108 @@ public final class Battle {
   /**
    * Duel of two units till one is dead
    *
-   * @param unit1 this unit starts the battle
-   * @param unit2 this unit hits second
+   * @param ally  this unit starts the battle
+   * @param enemy this unit hits second
    * @return true if the first wins, false otherwise
    */
-  public static boolean fight(Unit unit1, Unit unit2) {
-    LOGGER.info(getMessage(unit1, unit2));
-    while (unit1.isAlive() && unit2.isAlive()) {
-      unit1.hits(unit2);
-      LOGGER.info(getMessage(unit1, unit2));
-      if (unit2.isAlive()) {
-        unit2.hits(unit1);
-        LOGGER.info(getMessage(unit1, unit2));
+  public static boolean fight(Unit ally, Unit enemy) {
+    LOGGER.info(getMessage(ally, enemy));
+    while (ally.isAlive() && enemy.isAlive()) {
+      ally.hits(enemy);
+      LOGGER.info(getMessage(ally, enemy));
+      if (enemy.isAlive()) {
+        enemy.hits(ally);
+        LOGGER.info(getMessage(ally, enemy));
       } else {
         return true;
       }
     }
-    return unit1.isAlive();
+    return ally.isAlive();
   }
 
-  private static String getMessage(Unit unit1, Unit unit2) {
-    Unit behind1 = unit1.getBehind();
-    Unit behind2 = unit2.getBehind();
+  private static String getMessage(Unit ally, Unit enemy) {
+    Unit allyBehind = ally.getBehind();
+    Unit enemyBehind = enemy.getBehind();
     return String.format("%s%s ->X<- %s%s",
-        behind1 == null ? "" : String.format("[%s] < ", behind1),
-        unit1,
-        unit2,
-        behind2 == null ? "" : String.format(" > [%s]", behind2));
+        allyBehind == null ? "" : String.format("[%s] < ", allyBehind),
+        ally,
+        enemy,
+        enemyBehind == null ? "" : String.format(" > [%s]", enemyBehind));
   }
 
-  public static boolean fight(Army army1, Army army2) {
-    army1.lineUp();
-    army2.lineUp();
+  /**
+   * Duel of two armies till one of them wins.
+   * The fight is going with line-up formation.
+   *
+   * @param allyArmy  this army starts the battle
+   * @param enemyArmy this army hits second
+   * @return true if the first army is winning, false otherwise
+   */
+  public static boolean fight(Army allyArmy, Army enemyArmy) {
+    allyArmy.moveWarlordToTheEnd();
+    buryDeadAndMoveUnitsAndLineUp(allyArmy);
+    allyArmy.applySuperpowerFromWarlord();
+    enemyArmy.moveWarlordToTheEnd();
+    buryDeadAndMoveUnitsAndLineUp(enemyArmy);
+    enemyArmy.applySuperpowerFromWarlord();
 
-    while (army1.hasNext() && army2.hasNext()) {
-      boolean result = fight(army1.next(), army2.next());
+    while (allyArmy.hasNext() && enemyArmy.hasNext()) {
+      boolean result = fight(allyArmy.next(), enemyArmy.next());
       if (!result) {
-        buryDeadAndMoveUnits(army1);
-        army1.lineUp();
+        buryDeadAndMoveUnitsAndLineUp(allyArmy);
       } else {
-        buryDeadAndMoveUnits(army2);
-        army2.lineUp();
+        buryDeadAndMoveUnitsAndLineUp(enemyArmy);
       }
     }
-    return army1.isAlive();
+    return allyArmy.isAlive();
   }
 
-  private static void buryDeadAndMoveUnits(Army army) {
+  private static void buryDeadAndMoveUnitsAndLineUp(Army army) {
     army.buryDeadUnits();
     army.moveUnits();
+    army.lineUp();
   }
 
-  public static boolean straightFight(Army army1, Army army2) {
+  /**
+   * Duel of two armies till one of them wins.
+   * The fight is going with frontal formation.
+   *
+   * @param allyArmy  this army starts the battle
+   * @param enemyArmy this army hits second
+   * @return true if the first army is winning, false otherwise
+   */
+  public static boolean straightFight(Army allyArmy, Army enemyArmy) {
+    moveWarlordToTheEndAndBuryDeadAndMoveUnits(allyArmy);
+    moveWarlordToTheEndAndBuryDeadAndMoveUnits(enemyArmy);
     while (true) {
-      if (!army1.isAlive() && army2.isAlive()) {
+      if (!allyArmy.isAlive() && enemyArmy.isAlive()) {
         return false;
       }
-      if (army1.isAlive() && !army2.isAlive()) {
+      if (allyArmy.isAlive() && !enemyArmy.isAlive()) {
         return true;
       }
-      Iterator<Unit> armyOneIterator = army1.iterator();
-      Iterator<Unit> armyTwoIterator = army2.iterator();
+      Iterator<Unit> armyOneIterator = allyArmy.iterator();
+      Iterator<Unit> armyTwoIterator = enemyArmy.iterator();
       while (armyOneIterator.hasNext() && armyTwoIterator.hasNext()) {
         boolean isUnitOfArmyOneWinner = fight(armyOneIterator.next(), armyTwoIterator.next());
         if (isUnitOfArmyOneWinner) {
           armyTwoIterator.remove();
-          army2.moveUnits();
+          enemyArmy.moveUnits();
         } else {
           armyOneIterator.remove();
-          army1.moveUnits();
+          allyArmy.moveUnits();
         }
       }
-      LOGGER.info(army1.toString());
-      LOGGER.info(army2.toString());
+      LOGGER.info(allyArmy.toString());
+      LOGGER.info(enemyArmy.toString());
     }
 
+  }
+
+  private static void moveWarlordToTheEndAndBuryDeadAndMoveUnits(Army army) {
+    army.moveWarlordToTheEnd();
+    army.buryDeadUnits();
+    army.moveUnits();
   }
 
 }

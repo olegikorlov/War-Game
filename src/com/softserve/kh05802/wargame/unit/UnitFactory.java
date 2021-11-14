@@ -8,12 +8,12 @@ import java.util.List;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public class UnitFactory {
+public final class UnitFactory {
 
   private UnitFactory() {
   }
 
-  public static Unit generateUnit(Class<? extends Unit> type) {
+  private static Unit generateUnit(Class<? extends Unit> type) {
     if (type.equals(Knight.class)) {
       return new Knight();
     } else if (type.equals(DefenderImpl.class)) {
@@ -26,8 +26,10 @@ public class UnitFactory {
       return new Lancer();
     } else if (type.equals(HealerImpl.class)) {
       return new HealerImpl();
-    } else if (type.equals(Warlord.class)) {
-      return new Warlord();
+    } else if (type.equals(WarlordImpl.class)) {
+      return new WarlordImpl();
+    } else if (type.equals(Protector.class)) {
+      return new Protector();
     } else if (type.equals(Warrior.class)) {
       return new Warrior();
     }

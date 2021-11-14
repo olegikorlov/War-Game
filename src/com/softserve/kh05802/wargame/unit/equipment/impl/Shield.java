@@ -1,18 +1,9 @@
 package com.softserve.kh05802.wargame.unit.equipment.impl;
 
-import com.softserve.kh05802.wargame.unit.equipment.Equipment;
-
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 public final class Shield extends WeaponDecorator {
-
-  public Shield() {
-  }
-
-  public Shield(Equipment weapon) {
-    super(weapon);
-  }
 
   @Override
   public int getHealth() {

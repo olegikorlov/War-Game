@@ -19,10 +19,6 @@ abstract class WeaponDecorator implements Equipment {
         .build();
   }
 
-  WeaponDecorator(Equipment equipment) {
-    this.equipment = equipment;
-  }
-
   @Override
   public int getHealth() {
     return equipment.getHealth();

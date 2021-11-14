@@ -506,12 +506,12 @@ class BattleTest {
   @DisplayName("23. Battle")
   void battle23() {
     Army army1 = new Army()
-        .addUnits(Warlord.class, 1)
+        .addUnits(WarlordImpl.class, 1)
         .addUnits(Warrior.class, 2)
         .addUnits(Lancer.class, 2)
         .addUnits(HealerImpl.class, 2);
     Army army2 = new Army()
-        .addUnits(Warlord.class, 1)
+        .addUnits(WarlordImpl.class, 1)
         .addUnits(VampireImpl.class, 1)
         .addUnits(HealerImpl.class, 2)
         .addUnits(Knight.class, 2);
@@ -528,9 +528,9 @@ class BattleTest {
         .addUnits(Warrior.class, 2)
         .addUnits(Lancer.class, 2)
         .addUnits(DefenderImpl.class, 1)
-        .addUnits(Warlord.class, 3);
+        .addUnits(WarlordImpl.class, 3);
     Army army2 = new Army()
-        .addUnits(Warlord.class, 2)
+        .addUnits(WarlordImpl.class, 2)
         .addUnits(VampireImpl.class, 1)
         .addUnits(HealerImpl.class, 5)
         .addUnits(Knight.class, 2);
@@ -547,9 +547,9 @@ class BattleTest {
         .addUnits(Warrior.class, 2)
         .addUnits(Lancer.class, 3)
         .addUnits(DefenderImpl.class, 1)
-        .addUnits(Warlord.class, 4);
+        .addUnits(WarlordImpl.class, 4);
     Army army2 = new Army()
-        .addUnits(Warlord.class, 1)
+        .addUnits(WarlordImpl.class, 1)
         .addUnits(VampireImpl.class, 1)
         .addUnits(Rookie.class, 1)
         .addUnits(Knight.class, 1);
@@ -568,9 +568,9 @@ class BattleTest {
         .addUnits(Warrior.class, 2)
         .addUnits(Lancer.class, 3)
         .addUnits(DefenderImpl.class, 1)
-        .addUnits(Warlord.class, 1);
+        .addUnits(WarlordImpl.class, 1);
     Army army2 = new Army()
-        .addUnits(Warlord.class, 5)
+        .addUnits(WarlordImpl.class, 5)
         .addUnits(VampireImpl.class, 1)
         .addUnits(Rookie.class, 1)
         .addUnits(Knight.class, 1);
@@ -988,19 +988,19 @@ class BattleTest {
   @Order(50)
   @DisplayName("Warlord")
   void warlord() {
-    Warrior ronald = new Warlord();
+    Warrior ronald = new WarlordImpl();
     Warrior heimdall = new Knight();
 
     assertFalse(Battle.fight(heimdall, ronald));
 
     Army myArmy = new Army()
-        .addUnits(Warlord.class, 1)
+        .addUnits(WarlordImpl.class, 1)
         .addUnits(Warrior.class, 2)
         .addUnits(Lancer.class, 2)
         .addUnits(HealerImpl.class, 2);
 
     Army enemyArmy = new Army()
-        .addUnits(Warlord.class, 3)
+        .addUnits(WarlordImpl.class, 3)
         .addUnits(VampireImpl.class, 1)
         .addUnits(HealerImpl.class, 2)
         .addUnits(Knight.class, 2);
@@ -1010,10 +1010,10 @@ class BattleTest {
 
     assertTrue(myArmy.unitBy(0) instanceof Lancer);
     assertTrue(myArmy.unitBy(1) instanceof HealerImpl);
-    assertTrue(myArmy.unitBy(6) instanceof Warlord);
+    assertTrue(myArmy.unitBy(6) instanceof WarlordImpl);
 
     assertTrue(enemyArmy.unitBy(0) instanceof VampireImpl);
-    assertTrue(enemyArmy.unitBy(5) instanceof Warlord);
+    assertTrue(enemyArmy.unitBy(5) instanceof WarlordImpl);
     assertTrue(enemyArmy.unitBy(4) instanceof Knight);
 
     assertEquals(6, enemyArmy.size());

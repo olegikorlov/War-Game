@@ -1,18 +1,9 @@
 package com.softserve.kh05802.wargame.unit.equipment.impl;
 
-import com.softserve.kh05802.wargame.unit.equipment.Equipment;
-
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
 public final class Katana extends WeaponDecorator {
-
-  public Katana() {
-  }
-
-  public Katana(Equipment weapon) {
-    super(weapon);
-  }
 
   @Override
   public int getHealth() {
