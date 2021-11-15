@@ -1,5 +1,6 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.unit.Attacker;
 import com.softserve.kh05802.wargame.unit.Unit;
 
 import java.util.Iterator;
@@ -22,13 +23,16 @@ public final class Battle {
   public static boolean fight(Unit ally, Unit enemy) {
     LOGGER.info(getMessage(ally, enemy));
     while (ally.isAlive() && enemy.isAlive()) {
-      ally.hits(enemy);
+      if (ally instanceof Attacker) {
+        ((Attacker) ally).hits(enemy);
+      }
       LOGGER.info(getMessage(ally, enemy));
-      if (enemy.isAlive()) {
-        enemy.hits(ally);
-        LOGGER.info(getMessage(ally, enemy));
-      } else {
+      if (!enemy.isAlive()) {
         return true;
+      }
+      if (enemy instanceof Attacker) {
+        ((Attacker) enemy).hits(ally);
+        LOGGER.info(getMessage(ally, enemy));
       }
     }
     return ally.isAlive();

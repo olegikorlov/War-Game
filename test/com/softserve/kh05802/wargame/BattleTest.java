@@ -1021,4 +1021,23 @@ class BattleTest {
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
 
+  @Test
+  @Order(51)
+  @DisplayName("Protector + Barricade")
+  void protectorBarricade() {
+    Army army1 = new Army()
+        .addUnits(Knight.class, 1)
+        .addUnits(Warrior.class, 1)
+        .addUnits(Lancer.class, 2)
+        .addUnits(Protector.class, 3);
+    Army army2 = new Army()
+        .addUnits(Protector.class, 2)
+        .addUnits(BarricadeImpl.class, 3)
+        .addUnits(HealerImpl.class, 5)
+        .addUnits(Knight.class, 2);
+    army1.moveUnits();
+    army2.moveUnits();
+    assertTrue(Battle.fight(army1, army2));
+  }
+
 }

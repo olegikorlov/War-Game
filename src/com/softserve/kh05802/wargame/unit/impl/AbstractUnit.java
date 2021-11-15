@@ -10,20 +10,16 @@ import java.util.List;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-abstract class AbstractWarrior implements Unit {
+abstract class AbstractUnit implements Unit {
 
   private int health;
-  private int attack;
-
   private int maxHealth;
   private List<Equipment> equipments;
 
   private Unit behind;
 
-  AbstractWarrior(int health, int attack) {
+  AbstractUnit(int health) {
     this.health = health;
-    this.attack = attack;
-
     this.maxHealth = health;
     this.equipments = new ArrayList<>();
   }
@@ -34,23 +30,6 @@ abstract class AbstractWarrior implements Unit {
 
   protected void setHealth(int health) {
     this.health = Math.max(0, health);
-  }
-
-  @Override
-  public int getAttack() {
-    return attack;
-  }
-
-  protected void setAttack(int attack) {
-    this.attack = Math.max(0, attack);
-  }
-
-  @Override
-  public void hits(Unit unit) {
-    unit.addHealth(Math.min(0, -unit.getDamageFrom(this)));
-    if (getBehind() instanceof HealerImpl) {
-      ((HealerImpl) getBehind()).heal(this);
-    }
   }
 
   @Override
@@ -81,17 +60,11 @@ abstract class AbstractWarrior implements Unit {
     this.equipments.add(equipment);
     addHealth(equipment.getHealth());
     maxHealth = getHealth();
-    addAttack(equipment.getAttack());
   }
 
   @Override
   public void addHealth(int value) {
     setHealth(getHealth() + value);
-  }
-
-  @Override
-  public void addAttack(int value) {
-    setAttack(getAttack() + value);
   }
 
   protected int getMaxHealth() {
@@ -100,9 +73,7 @@ abstract class AbstractWarrior implements Unit {
 
   @Override
   public String toString() {
-    return this.getClass().getSimpleName() + "{" + "health=" + getHealth() +
-        ", attack=" + getAttack() +
-        '}';
+    return this.getClass().getSimpleName() + "{" + "health=" + getHealth() + '}';
   }
 
 }

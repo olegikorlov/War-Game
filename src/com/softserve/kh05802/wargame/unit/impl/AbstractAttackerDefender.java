@@ -7,12 +7,12 @@ import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-abstract class AbstractDefender extends AbstractUnit implements Defender {
+abstract class AbstractAttackerDefender extends Warrior implements Defender {
 
   private int defense;
 
-  AbstractDefender(int health, int defense) {
-    super(health);
+  AbstractAttackerDefender(int health, int attack, int defense) {
+    super(health, attack);
     this.defense = defense;
   }
 
@@ -36,6 +36,7 @@ abstract class AbstractDefender extends AbstractUnit implements Defender {
   public String toString() {
     return this.getClass().getSimpleName() + "{" +
         "health=" + getHealth() +
+        ", attack=" + getAttack() +
         ", defense=" + getDefense() +
         '}';
   }

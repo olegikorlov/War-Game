@@ -1,5 +1,6 @@
 package com.softserve.kh05802.wargame.unit.impl;
 
+import com.softserve.kh05802.wargame.unit.Barricade;
 import com.softserve.kh05802.wargame.unit.Unit;
 
 /**
@@ -15,6 +16,9 @@ public class Lancer extends Warrior {
   public void hits(Unit unit) {
     int firstWarriorDamage = unit.getDamageFrom(this);
     super.hits(unit);
+    if (unit instanceof Barricade) {
+      return;
+    }
     Unit unitBehind = unit.getBehind();
     if (unitBehind != null) {
       new ProxyLancer(firstWarriorDamage).hits(unitBehind);

@@ -1,5 +1,6 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.unit.Barricade;
 import com.softserve.kh05802.wargame.unit.Healer;
 import com.softserve.kh05802.wargame.unit.Unit;
 import com.softserve.kh05802.wargame.unit.Warlord;
@@ -167,7 +168,7 @@ public final class Army implements Iterable<Unit> {
     return getLastUnit() instanceof Warlord;
   }
 
-  private void moveLancersAhead() {
+  public void moveLancersAhead() {
     units.sort((unit1, unit2) -> {
       if (!(unit1 instanceof Lancer) && unit2 instanceof Lancer) {
         return 1;
@@ -178,6 +179,17 @@ public final class Army implements Iterable<Unit> {
       } else if (unit1 instanceof Healer && !(unit2 instanceof Healer)) {
         return -1;
       }*/
+      return 0;
+    });
+  }
+
+  public void moveBarricadeAhead() {
+    units.sort((unit1, unit2) -> {
+      if (!(unit1 instanceof Barricade) && unit2 instanceof Barricade) {
+        return 1;
+      } else if (unit1 instanceof Barricade && !(unit2 instanceof Barricade)) {
+        return -1;
+      }
       return 0;
     });
   }

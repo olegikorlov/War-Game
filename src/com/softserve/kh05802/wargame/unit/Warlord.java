@@ -5,7 +5,7 @@ import com.softserve.kh05802.wargame.Army;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public interface Warlord extends Unit {
+public interface Warlord extends Attacker, Defender {
 
   void applySuperpower(Army army);
 

@@ -32,6 +32,8 @@ public final class UnitFactory {
       return new Protector();
     } else if (type.equals(Warrior.class)) {
       return new Warrior();
+    } else if (type.equals(BarricadeImpl.class)) {
+      return new BarricadeImpl();
     }
     throw new IllegalArgumentException("Unknown type: " + type);
   }
