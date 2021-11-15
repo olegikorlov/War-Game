@@ -19,8 +19,8 @@ public final class WarlordImpl extends AbstractWarlord {
 
   @Override
   public void move(Army army) {
-    if (army.unitBy(0) instanceof Lancer
-        && army.unitBy(1) instanceof Healer) {
+    if (army.getUnitBy(0) instanceof Lancer
+        && army.getUnitBy(1) instanceof Healer) {
       return;
     }
 

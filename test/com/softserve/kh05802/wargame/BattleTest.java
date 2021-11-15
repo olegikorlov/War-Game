@@ -553,8 +553,8 @@ class BattleTest {
         .addUnits(VampireImpl.class, 1)
         .addUnits(Rookie.class, 1)
         .addUnits(Knight.class, 1);
-    army1.unitBy(0).equipWeapon(new Sword());
-    army2.unitBy(0).equipWeapon(new Shield());
+    army1.getUnitBy(0).equipWeapon(new Sword());
+    army2.getUnitBy(0).equipWeapon(new Shield());
     army1.moveUnits();
     army2.moveUnits();
     assertTrue(Battle.fight(army1, army2));
@@ -574,8 +574,8 @@ class BattleTest {
         .addUnits(VampireImpl.class, 1)
         .addUnits(Rookie.class, 1)
         .addUnits(Knight.class, 1);
-    army1.unitBy(0).equipWeapon(new Sword());
-    army2.unitBy(0).equipWeapon(new Shield());
+    army1.getUnitBy(0).equipWeapon(new Sword());
+    army2.getUnitBy(0).equipWeapon(new Shield());
     army1.moveUnits();
     army2.moveUnits();
     var res = Battle.straightFight(army1, army2);
@@ -658,10 +658,10 @@ class BattleTest {
         .addUnits(VampireImpl.class, 1)
         .addUnits(HealerImpl.class, 1);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon2);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon2);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
@@ -680,10 +680,10 @@ class BattleTest {
         .addUnits(Knight.class, 1)
         .addUnits(HealerImpl.class, 1);
 
-    myArmy.unitBy(0).equipWeapon(weapon2);
-    myArmy.unitBy(1).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(0).equipWeapon(weapon2);
+    myArmy.getUnitBy(1).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon1);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
@@ -701,10 +701,10 @@ class BattleTest {
         .addUnits(Knight.class, 1)
         .addUnits(VampireImpl.class, 1);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon1);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon1);
 
     assertFalse(Battle.fight(myArmy, enemyArmy));
   }
@@ -734,12 +734,12 @@ class BattleTest {
         .addUnits(Warrior.class, 1)
         .addUnits(DefenderImpl.class, 2);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon1);
-    myArmy.unitBy(2).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon2);
-    enemyArmy.unitBy(2).equipWeapon(weapon2);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(2).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(2).equipWeapon(weapon2);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
@@ -769,12 +769,12 @@ class BattleTest {
         .addUnits(Warrior.class, 1)
         .addUnits(DefenderImpl.class, 2);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon1);
-    myArmy.unitBy(2).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon2);
-    enemyArmy.unitBy(2).equipWeapon(weapon2);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(2).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(2).equipWeapon(weapon2);
 
     assertFalse(Battle.fight(myArmy, enemyArmy));
   }
@@ -793,12 +793,12 @@ class BattleTest {
         .addUnits(Warrior.class, 1)
         .addUnits(DefenderImpl.class, 2);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon1);
-    myArmy.unitBy(2).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon2);
-    enemyArmy.unitBy(2).equipWeapon(weapon2);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(2).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(2).equipWeapon(weapon2);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
@@ -816,11 +816,11 @@ class BattleTest {
         .addUnits(Warrior.class, 1)
         .addUnits(DefenderImpl.class, 1);
 
-    myArmy.unitBy(0).equipWeapon(weapon2);
-    myArmy.unitBy(1).equipWeapon(weapon2);
-    myArmy.unitBy(2).equipWeapon(weapon2);
-    enemyArmy.unitBy(0).equipWeapon(weapon1);
-    enemyArmy.unitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(0).equipWeapon(weapon2);
+    myArmy.getUnitBy(1).equipWeapon(weapon2);
+    myArmy.getUnitBy(2).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon1);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
   }
@@ -838,11 +838,11 @@ class BattleTest {
         .addUnits(DefenderImpl.class, 1)
         .addUnits(HealerImpl.class, 1);
 
-    myArmy.unitBy(0).equipWeapon(weapon1);
-    myArmy.unitBy(1).equipWeapon(weapon1);
-    myArmy.unitBy(2).equipWeapon(weapon1);
-    enemyArmy.unitBy(0).equipWeapon(weapon2);
-    enemyArmy.unitBy(1).equipWeapon(weapon2);
+    myArmy.getUnitBy(0).equipWeapon(weapon1);
+    myArmy.getUnitBy(1).equipWeapon(weapon1);
+    myArmy.getUnitBy(2).equipWeapon(weapon1);
+    enemyArmy.getUnitBy(0).equipWeapon(weapon2);
+    enemyArmy.getUnitBy(1).equipWeapon(weapon2);
 
     assertFalse(Battle.fight(myArmy, enemyArmy));
   }
@@ -975,10 +975,10 @@ class BattleTest {
         .addUnits(VampireImpl.class, 1)
         .addUnits(HealerImpl.class, 1);
 
-    myArmy.unitBy(1).equipWeapon(superWeapon);
+    myArmy.getUnitBy(1).equipWeapon(superWeapon);
 
-    enemyArmy.unitBy(0).equipWeapon(katana);
-    enemyArmy.unitBy(1).equipWeapon(wand);
+    enemyArmy.getUnitBy(0).equipWeapon(katana);
+    enemyArmy.getUnitBy(1).equipWeapon(wand);
 
     assertTrue(Battle.fight(myArmy, enemyArmy));
 
@@ -1008,13 +1008,13 @@ class BattleTest {
     myArmy.moveUnits();
     enemyArmy.moveUnits();
 
-    assertTrue(myArmy.unitBy(0) instanceof Lancer);
-    assertTrue(myArmy.unitBy(1) instanceof HealerImpl);
-    assertTrue(myArmy.unitBy(6) instanceof WarlordImpl);
+    assertTrue(myArmy.getUnitBy(0) instanceof Lancer);
+    assertTrue(myArmy.getUnitBy(1) instanceof HealerImpl);
+    assertTrue(myArmy.getUnitBy(6) instanceof WarlordImpl);
 
-    assertTrue(enemyArmy.unitBy(0) instanceof VampireImpl);
-    assertTrue(enemyArmy.unitBy(5) instanceof WarlordImpl);
-    assertTrue(enemyArmy.unitBy(4) instanceof Knight);
+    assertTrue(enemyArmy.getUnitBy(0) instanceof VampireImpl);
+    assertTrue(enemyArmy.getUnitBy(5) instanceof WarlordImpl);
+    assertTrue(enemyArmy.getUnitBy(4) instanceof Knight);
 
     assertEquals(6, enemyArmy.size());
 

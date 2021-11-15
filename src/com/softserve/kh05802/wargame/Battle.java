@@ -34,16 +34,6 @@ public final class Battle {
     return ally.isAlive();
   }
 
-  private static String getMessage(Unit ally, Unit enemy) {
-    Unit allyBehind = ally.getBehind();
-    Unit enemyBehind = enemy.getBehind();
-    return String.format("%s%s ->X<- %s%s",
-        allyBehind == null ? "" : String.format("[%s] < ", allyBehind),
-        ally,
-        enemy,
-        enemyBehind == null ? "" : String.format(" > [%s]", enemyBehind));
-  }
-
   /**
    * Duel of two armies till one of them wins.
    * The fight is going with line-up formation.
@@ -53,12 +43,10 @@ public final class Battle {
    * @return true if the first army is winning, false otherwise
    */
   public static boolean fight(Army allyArmy, Army enemyArmy) {
-    allyArmy.moveWarlordToTheEnd();
-    buryDeadAndMoveUnitsAndLineUp(allyArmy);
     allyArmy.applySuperpowerFromWarlord();
-    enemyArmy.moveWarlordToTheEnd();
-    buryDeadAndMoveUnitsAndLineUp(enemyArmy);
+    buryDeadAndMoveUnitsAndLineUp(allyArmy);
     enemyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnitsAndLineUp(enemyArmy);
 
     while (allyArmy.hasNext() && enemyArmy.hasNext()) {
       boolean result = fight(allyArmy.next(), enemyArmy.next());
@@ -71,12 +59,6 @@ public final class Battle {
     return allyArmy.isAlive();
   }
 
-  private static void buryDeadAndMoveUnitsAndLineUp(Army army) {
-    army.buryDeadUnits();
-    army.moveUnits();
-    army.lineUp();
-  }
-
   /**
    * Duel of two armies till one of them wins.
    * The fight is going with frontal formation.
@@ -86,8 +68,10 @@ public final class Battle {
    * @return true if the first army is winning, false otherwise
    */
   public static boolean straightFight(Army allyArmy, Army enemyArmy) {
-    moveWarlordToTheEndAndBuryDeadAndMoveUnits(allyArmy);
-    moveWarlordToTheEndAndBuryDeadAndMoveUnits(enemyArmy);
+    allyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnits(allyArmy);
+    enemyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnits(enemyArmy);
     while (true) {
       if (!allyArmy.isAlive() && enemyArmy.isAlive()) {
         return false;
@@ -113,10 +97,24 @@ public final class Battle {
 
   }
 
-  private static void moveWarlordToTheEndAndBuryDeadAndMoveUnits(Army army) {
-    army.moveWarlordToTheEnd();
+  private static void buryDeadAndMoveUnits(Army army) {
     army.buryDeadUnits();
     army.moveUnits();
+  }
+
+  private static void buryDeadAndMoveUnitsAndLineUp(Army army) {
+    buryDeadAndMoveUnits(army);
+    army.lineUp();
+  }
+
+  private static String getMessage(Unit ally, Unit enemy) {
+    Unit allyBehind = ally.getBehind();
+    Unit enemyBehind = enemy.getBehind();
+    return String.format("%s%s ->X<- %s%s",
+        allyBehind == null ? "" : String.format("[%s] < ", allyBehind),
+        ally,
+        enemy,
+        enemyBehind == null ? "" : String.format(" > [%s]", enemyBehind));
   }
 
 }
