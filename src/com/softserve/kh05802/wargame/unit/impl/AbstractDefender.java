@@ -11,7 +11,7 @@ abstract class AbstractDefender extends AbstractUnit implements Defender {
 
   private int defense;
 
-  AbstractDefender(int health, int defense) {
+  protected AbstractDefender(int health, int defense) {
     super(health);
     this.defense = defense;
   }

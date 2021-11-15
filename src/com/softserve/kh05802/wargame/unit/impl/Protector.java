@@ -14,11 +14,11 @@ public final class Protector extends AbstractWarlord {
 
   @Override
   public void applySuperpower(Army army) {
+    Weapon weapon = Weapon.builder()
+        .defense(2)
+        .health(10)
+        .build();
     for (int index = 0; index < army.size() - 1; index++) {
-      Weapon weapon = Weapon.builder()
-          .defense(2)
-          .health(10)
-          .build();
       army.getUnitBy(index).equipWeapon(weapon);
     }
   }

@@ -7,7 +7,7 @@ import com.softserve.kh05802.wargame.unit.Barricade;
  */
 abstract class AbstractBarricade extends AbstractDefender implements Barricade {
 
-  AbstractBarricade(int health, int defense) {
+  protected AbstractBarricade(int health, int defense) {
     super(health, defense);
   }
 

@@ -11,7 +11,7 @@ abstract class AbstractAttackerDefender extends Warrior implements Defender {
 
   private int defense;
 
-  AbstractAttackerDefender(int health, int attack, int defense) {
+  protected AbstractAttackerDefender(int health, int attack, int defense) {
     super(health, attack);
     this.defense = defense;
   }

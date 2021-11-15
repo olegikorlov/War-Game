@@ -11,7 +11,7 @@ abstract class AbstractAttacker extends AbstractUnit implements Attacker {
 
   private int attack;
 
-  AbstractAttacker(int health, int attack) {
+  protected AbstractAttacker(int health, int attack) {
     super(health);
     this.attack = attack;
   }

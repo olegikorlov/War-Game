@@ -7,7 +7,7 @@ import com.softserve.kh05802.wargame.unit.Warlord;
  */
 abstract class AbstractWarlord extends AbstractAttackerDefender implements Warlord {
 
-  AbstractWarlord(int health, int attack, int defense) {
+  protected AbstractWarlord(int health, int attack, int defense) {
     super(health, attack, defense);
   }
 

@@ -18,7 +18,7 @@ abstract class AbstractUnit implements Unit {
 
   private Unit behind;
 
-  AbstractUnit(int health) {
+  protected AbstractUnit(int health) {
     this.health = health;
     this.maxHealth = health;
     this.equipments = new ArrayList<>();
