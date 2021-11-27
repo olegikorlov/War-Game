@@ -1,5 +1,6 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.unit.Attacker;
 import com.softserve.kh05802.wargame.unit.Unit;
 
 import java.util.Iterator;
@@ -15,50 +16,89 @@ public final class Battle {
   /**
    * Duel of two units till one is dead
    *
-   * @param unit1 this unit starts the battle
-   * @param unit2 this unit hits second
+   * @param ally  this unit starts the battle
+   * @param enemy this unit hits second
    * @return true if the first wins, false otherwise
    */
-  public static boolean fight(Unit unit1, Unit unit2) {
-    LOGGER.info(getMessage(unit1, unit2));
-    while (unit1.isAlive() && unit2.isAlive()) {
-      unit1.hits(unit2);
-      LOGGER.info(getMessage(unit1, unit2));
-      if (unit2.isAlive()) {
-        unit2.hits(unit1);
-        LOGGER.info(getMessage(unit1, unit2));
-      } else {
+  public static boolean fight(Unit ally, Unit enemy) {
+    LOGGER.info(getMessage(ally, enemy));
+    while (ally.isAlive() && enemy.isAlive()) {
+      if (ally instanceof Attacker) {
+        ((Attacker) ally).hits(enemy);
+      }
+      LOGGER.info(getMessage(ally, enemy));
+      if (!enemy.isAlive()) {
         return true;
       }
-    }
-    return unit1.isAlive();
-  }
-
-  private static String getMessage(Unit unit1, Unit unit2) {
-    Unit behind1 = unit1.getBehind();
-    Unit behind2 = unit2.getBehind();
-    return String.format("%s%s ->X<- %s%s",
-        behind1 == null ? "" : String.format("[%s] < ", behind1),
-        unit1,
-        unit2,
-        behind2 == null ? "" : String.format(" > [%s]", behind2));
-  }
-
-  public static boolean fight(Army army1, Army army2) {
-    army1.lineUp();
-    army2.lineUp();
-
-    while (army1.hasNext() && army2.hasNext()) {
-      boolean result = fight(army1.next(), army2.next());
-      if (!result) {
-        buryDeadAndMoveUnits(army1);
-        army1.lineUp();
-      } else {
-        buryDeadAndMoveUnits(army2);
-        army2.lineUp();
+      if (enemy instanceof Attacker) {
+        ((Attacker) enemy).hits(ally);
+        LOGGER.info(getMessage(ally, enemy));
       }
     }
-    return army1.isAlive();
+    return ally.isAlive();
+  }
+
+  /**
+   * Duel of two armies till one of them wins.
+   * The fight is going with line-up formation.
+   *
+   * @param allyArmy  this army starts the battle
+   * @param enemyArmy this army hits second
+   * @return true if the first army is winning, false otherwise
+   */
+  public static boolean fight(Army allyArmy, Army enemyArmy) {
+    allyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnitsAndLineUp(allyArmy);
+    enemyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnitsAndLineUp(enemyArmy);
+
+    while (allyArmy.hasNext() && enemyArmy.hasNext()) {
+      boolean result = fight(allyArmy.next(), enemyArmy.next());
+      if (!result) {
+        buryDeadAndMoveUnitsAndLineUp(allyArmy);
+      } else {
+        buryDeadAndMoveUnitsAndLineUp(enemyArmy);
+      }
+    }
+    return allyArmy.isAlive();
+  }
+
+  /**
+   * Duel of two armies till one of them wins.
+   * The fight is going with frontal formation.
+   *
+   * @param allyArmy  this army starts the battle
+   * @param enemyArmy this army hits second
+   * @return true if the first army is winning, false otherwise
+   */
+  public static boolean straightFight(Army allyArmy, Army enemyArmy) {
+    allyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnits(allyArmy);
+    enemyArmy.applySuperpowerFromWarlord();
+    buryDeadAndMoveUnits(enemyArmy);
+    while (true) {
+      if (!allyArmy.isAlive() && enemyArmy.isAlive()) {
+        return false;
+      }
+      if (allyArmy.isAlive() && !enemyArmy.isAlive()) {
+        return true;
+      }
+      Iterator<Unit> armyOneIterator = allyArmy.iterator();
+      Iterator<Unit> armyTwoIterator = enemyArmy.iterator();
+      while (armyOneIterator.hasNext() && armyTwoIterator.hasNext()) {
+        boolean isUnitOfArmyOneWinner = fight(armyOneIterator.next(), armyTwoIterator.next());
+        if (isUnitOfArmyOneWinner) {
+          armyTwoIterator.remove();
+          enemyArmy.moveUnits();
+        } else {
+          armyOneIterator.remove();
+          allyArmy.moveUnits();
+        }
+      }
+      LOGGER.info(allyArmy.toString());
+      LOGGER.info(enemyArmy.toString());
+    }
+
   }
 
   private static void buryDeadAndMoveUnits(Army army) {
@@ -66,30 +106,19 @@ public final class Battle {
     army.moveUnits();
   }
 
-  public static boolean straightFight(Army army1, Army army2) {
-    while (true) {
-      if (!army1.isAlive() && army2.isAlive()) {
-        return false;
-      }
-      if (army1.isAlive() && !army2.isAlive()) {
-        return true;
-      }
-      Iterator<Unit> armyOneIterator = army1.iterator();
-      Iterator<Unit> armyTwoIterator = army2.iterator();
-      while (armyOneIterator.hasNext() && armyTwoIterator.hasNext()) {
-        boolean isUnitOfArmyOneWinner = fight(armyOneIterator.next(), armyTwoIterator.next());
-        if (isUnitOfArmyOneWinner) {
-          armyTwoIterator.remove();
-          army2.moveUnits();
-        } else {
-          armyOneIterator.remove();
-          army1.moveUnits();
-        }
-      }
-      LOGGER.info(army1.toString());
-      LOGGER.info(army2.toString());
-    }
+  private static void buryDeadAndMoveUnitsAndLineUp(Army army) {
+    buryDeadAndMoveUnits(army);
+    army.lineUp();
+  }
 
+  private static String getMessage(Unit ally, Unit enemy) {
+    Unit allyBehind = ally.getBehind();
+    Unit enemyBehind = enemy.getBehind();
+    return String.format("%s%s ->X<- %s%s",
+        allyBehind == null ? "" : String.format("[%s] < ", allyBehind),
+        ally,
+        enemy,
+        enemyBehind == null ? "" : String.format(" > [%s]", enemyBehind));
   }
 
 }

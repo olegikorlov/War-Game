@@ -1,15 +1,17 @@
 package com.softserve.kh05802.wargame;
 
+import com.softserve.kh05802.wargame.unit.Barricade;
 import com.softserve.kh05802.wargame.unit.Healer;
 import com.softserve.kh05802.wargame.unit.Unit;
-import com.softserve.kh05802.wargame.unit.UnitFactory;
+import com.softserve.kh05802.wargame.unit.Warlord;
 import com.softserve.kh05802.wargame.unit.impl.Lancer;
-import com.softserve.kh05802.wargame.unit.impl.Warlord;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.softserve.kh05802.wargame.unit.UnitFactory.generateUnits;
 
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
@@ -17,17 +19,27 @@ import java.util.NoSuchElementException;
 public final class Army implements Iterable<Unit> {
 
   private final List<Unit> units = new LinkedList<>();
+  private int warlordPosition = -1;
 
-  private boolean isWarlordPresent = false;
+  private boolean isWarlordPresent() {
+    return warlordPosition > -1;
+  }
 
   public Army addUnits(Class<? extends Unit> type, int quantity) {
-    if (type != Warlord.class) {
-      List<Unit> unitList = UnitFactory.generateUnits(type, quantity);
-      units.addAll(unitList);
-    } else if (!isWarlordPresent) {
-      units.add(UnitFactory.generateUnit(type));
-      isWarlordPresent = true;
+    List<Unit> unitList = generateUnits(type, quantity);
+    if (unitList.isEmpty()) {
+      return this;
     }
+    if (!(unitList.get(0) instanceof Warlord)) {
+      units.addAll(unitList);
+      return this;
+    }
+    if (!isWarlordPresent()) {
+      units.add(unitList.get(0));
+      warlordPosition = getLastIndex();
+      return this;
+    }
+    units.set(warlordPosition, unitList.get(0));
     return this;
   }
 
@@ -36,22 +48,27 @@ public final class Army implements Iterable<Unit> {
   }
 
   public void lineUp() {
-    if (units.size() == 1) {
+    if (size() == 1) {
       return;
     }
-    for (int i = 0; i < units.size() - 1; i++) {
-      units.get(i).setBehind(units.get(i + 1));
+    for (int i = 0; i < getLastIndex(); i++) {
+      getUnitBy(i).setBehind(getUnitBy(i + 1));
     }
   }
 
-  public Unit unitBy(int index) {
-    if (index >= units.size()) {
-      throw new IndexOutOfBoundsException();
-    }
+  public Unit getLastUnit() {
+    return getUnitBy(getLastIndex());
+  }
+
+  private int getLastIndex() {
+    return size() - 1;
+  }
+
+  public Unit getUnitBy(int index) {
     return units.get(index);
   }
 
-  int size() {
+  public int size() {
     return units.size();
   }
 
@@ -59,7 +76,7 @@ public final class Army implements Iterable<Unit> {
     if (!hasNext()) {
       throw new NoSuchElementException();
     }
-    return units.get(0);
+    return getUnitBy(0);
   }
 
   public boolean hasNext() {
@@ -76,66 +93,82 @@ public final class Army implements Iterable<Unit> {
   }
 
   public void moveUnits() {
-    if (!isWarlordPresent
-        || units.size() < 2
-        || unitBy(0) instanceof Lancer && unitBy(1) instanceof Healer) {
+    if (size() < 2 || !moveWarlordToTheEnd()) {
       return;
     }
 
-    if (!(unitBy(units.size() - 1) instanceof Warlord)) {
-      moveWarlordToTheEnd();
-    }
-
-    moveLancerOrNotHealerOnFirstPlace();
-    moveHealerOnSecondPlace();
+    Warlord warlord = (Warlord) getLastUnit();
+    warlord.move(this);
 
     System.out.println(units);
   }
 
-  private void moveHealerOnSecondPlace() {
-    if (unitBy(1) instanceof Healer) {
-      return;
+  public Army moveHealerOnSecondPlace() {
+    if (getUnitBy(1) instanceof Healer) {
+      return this;
     }
-    for (int fromIndex = 2; fromIndex < units.size() - 1; fromIndex++) {
-      if (unitBy(fromIndex) instanceof Healer) {
+    for (int fromIndex = 2; fromIndex < getLastIndex(); fromIndex++) {
+      if (getUnitBy(fromIndex) instanceof Healer) {
         insertWithShift(1, fromIndex);
-        return;
+        return this;
       }
     }
+    return this;
   }
 
-  private void moveLancerOrNotHealerOnFirstPlace() {
+  /**
+   * The method move some lancer or not a healer on first place.
+   *
+   * @return Army
+   */
+  public Army moveLancerOrNotHealerOnFirstPlace() {
     moveLancersAhead();
-    if (unitBy(0) instanceof Lancer || !(unitBy(0) instanceof Healer)) {
-      return;
+    if (getUnitBy(0) instanceof Lancer || !(getUnitBy(0) instanceof Healer)) {
+      return this;
     }
 
-    /**
+    /*
      * if healer heal the warlord then index have to start from 0 if not from 1
      * in some case with index 0 we can get infinity loop.
      * For example, in case [Healer > Warlord ->X<- Warlord < Healer]
      */
-    for (int fromIndex = 1; fromIndex < units.size() - 1; fromIndex++) {
-      if (!(unitBy(fromIndex) instanceof Healer)) {
+    for (int fromIndex = 1; fromIndex < getLastIndex(); fromIndex++) {
+      if (!(getUnitBy(fromIndex) instanceof Healer)) {
         insertWithShift(0, fromIndex);
-        return;
+        return this;
       }
     }
+    return this;
   }
 
-  private void moveWarlordToTheEnd() {
-    units.sort((unit1, unit2) -> {
-      if (!(unit1 instanceof Warlord) && !(unit2 instanceof Warlord)) {
-        return 0;
-      }
-      if (unit1 instanceof Warlord) {
-        return 1;
-      }
-      return -1;
-    });
+  public void applySuperpowerFromWarlord() {
+    if (!isWarlordPresent()) {
+      return;
+    }
+    if (!(getLastUnit() instanceof Warlord)) {
+      moveWarlordToTheEnd();
+    }
+    Warlord warlord = (Warlord) getLastUnit();
+    warlord.applySuperpower(this);
   }
 
-  private void moveLancersAhead() {
+  public boolean moveWarlordToTheEnd() {
+    if (!isWarlordPresent()) {
+      return false;
+    }
+    if (getLastUnit() instanceof Warlord) {
+      return true;
+    }
+    for (int index = 0; index < getLastIndex(); index++) {
+      if (getUnitBy(index) instanceof Warlord) {
+        insertWithShift(getLastIndex(), index);
+        warlordPosition = getLastIndex();
+      }
+    }
+    return getLastUnit() instanceof Warlord;
+  }
+
+  public void moveLancersAhead() {
     units.sort((unit1, unit2) -> {
       if (!(unit1 instanceof Lancer) && unit2 instanceof Lancer) {
         return 1;
@@ -150,17 +183,30 @@ public final class Army implements Iterable<Unit> {
     });
   }
 
+  public void moveBarricadeAhead() {
+    units.sort((unit1, unit2) -> {
+      if (!(unit1 instanceof Barricade) && unit2 instanceof Barricade) {
+        return 1;
+      } else if (unit1 instanceof Barricade && !(unit2 instanceof Barricade)) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
   private void insertWithShift(int toIndex, int fromIndex) {
     if (fromIndex <= toIndex) {
-      throw new IllegalArgumentException("\"fromIndex\" have to be bigger then \"toIndex\"");
+      for (int i = fromIndex; i < toIndex; i++) {
+        swapUnitsBy(i, i + 1);
+      }
     }
     for (int i = fromIndex; i > toIndex; i--) {
       swapUnitsBy(i - 1, i);
     }
   }
 
-  private void swapUnitsBy(int index0, int index1) {
-    units.set(index0, units.set(index1, units.get(index0)));
+  private void swapUnitsBy(int toIndex, int fromIndex) {
+    units.set(toIndex, units.set(fromIndex, getUnitBy(toIndex)));
   }
 
   @Override

@@ -9,7 +9,7 @@ abstract class WeaponDecorator implements Equipment {
 
   private final Equipment equipment;
 
-  WeaponDecorator() {
+  protected WeaponDecorator() {
     this.equipment = Weapon.builder()
         .health(0)
         .attack(0)
@@ -17,10 +17,6 @@ abstract class WeaponDecorator implements Equipment {
         .vampirism(0)
         .healPower(0)
         .build();
-  }
-
-  WeaponDecorator(Equipment equipment) {
-    this.equipment = equipment;
   }
 
   @Override

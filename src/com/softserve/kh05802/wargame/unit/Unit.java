@@ -5,7 +5,7 @@ import com.softserve.kh05802.wargame.unit.equipment.Equipment;
 /**
  * @author <a href="mailto:info@olegorlov.com">Oleg Orlov</a>
  */
-public interface Unit extends Attacker {
+public interface Unit {
 
   boolean isAlive();
 
@@ -18,7 +18,5 @@ public interface Unit extends Attacker {
   void equipWeapon(Equipment equipment);
 
   void addHealth(int value);
-
-  void addAttack(int value);
 
 }
